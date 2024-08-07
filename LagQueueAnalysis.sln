@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LagQueueAnalysisAPI", "LagQ
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LagQueueDomain", "LagQueueDomain\LagQueueDomain.csproj", "{7ECAFE1C-1D92-4370-B8AB-414E0FCB3C26}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LagQueueApplication", "LagQueueApplication\LagQueueApplication.csproj", "{1445A886-60FD-41A0-B274-58C8B667499A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{7ECAFE1C-1D92-4370-B8AB-414E0FCB3C26}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7ECAFE1C-1D92-4370-B8AB-414E0FCB3C26}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7ECAFE1C-1D92-4370-B8AB-414E0FCB3C26}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1445A886-60FD-41A0-B274-58C8B667499A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1445A886-60FD-41A0-B274-58C8B667499A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1445A886-60FD-41A0-B274-58C8B667499A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1445A886-60FD-41A0-B274-58C8B667499A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
