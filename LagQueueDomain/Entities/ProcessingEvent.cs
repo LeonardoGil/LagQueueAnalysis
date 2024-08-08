@@ -37,7 +37,8 @@ namespace LagQueueDomain.Entities
             return new ProcessingEvent()
             {
                 Id = Guid.NewGuid(),
-                Name = name
+                Name = name,
+                Start = DateTime.UtcNow
             };
         }
     }
