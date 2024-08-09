@@ -16,11 +16,17 @@ namespace LagQueueApplication.Repository
 
         public T Add<T>(T entity)
         {
+            if (entity is null)
+                return entity;
+
             return (T)DbContext.Add(entity).Entity;
         }
 
         public T Update<T>(T entity)
         {
+            if (entity is null)
+                return entity;
+
             return (T)DbContext.Update(entity).Entity;
         }
 
