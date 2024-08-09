@@ -1,7 +1,7 @@
 ﻿using LagQueueApplication.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace LagQueueApplication.Services.Events
+namespace LagQueueApplication.Services
 {
     public class ExecuteProcessingEventService : IExecuteProcessingEventService
     {
@@ -14,18 +14,17 @@ namespace LagQueueApplication.Services.Events
             _processingEventService = processingEventService;
         }
 
-
-        public Task<Guid> On<Command, TBackgroundService>(Command obj, string serviceName = nameof(ExecuteProcessingEventService)) where TBackgroundService : IBackgroundService
+        public Task<Guid> On<Event, ProcessingEvent>(Event obj, string serviceName = nameof(ExecuteProcessingEventService)) where ProcessingEvent : IProcessingEvent<Event>
         {
             var processingId = _processingEventService.Register(serviceName);
 
             Task.Run(async () =>
             {
                 using var scope = _scopeFactory.CreateScope();
-                
-                var service = scope.ServiceProvider.GetRequiredService<TBackgroundService>();
 
-                throw new NotImplementedException();
+                var service = scope.ServiceProvider.GetRequiredService<ProcessingEvent>();
+
+                await service.Run(obj);
             });
 
             return Task.FromResult(processingId);
