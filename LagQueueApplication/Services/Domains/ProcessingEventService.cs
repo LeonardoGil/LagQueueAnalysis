@@ -1,5 +1,6 @@
 ﻿using LagQueueApplication.Interfaces;
 using LagQueueDomain.Entities;
+using System;
 
 namespace LagQueueApplication.Services.Domains
 {
@@ -12,14 +13,38 @@ namespace LagQueueApplication.Services.Domains
             _repository = repository;
         }
 
-        public Guid Register(string name)
+        public void ProcessFail(ProcessingEvent processingEvent, Exception exception)
+        {
+            processingEvent.SetFail(exception);
+
+            if (!_repository.IsTracking(processingEvent))
+            {
+                _repository.Update(processingEvent);
+            }
+
+            _repository.SaveChanges();
+        }
+
+        public void ProcessSuccess(ProcessingEvent processingEvent)
+        {
+            processingEvent.SetSucess();
+
+            if (!_repository.IsTracking(processingEvent))
+            {
+                _repository.Update(processingEvent);
+            }
+
+            _repository.SaveChanges();
+        }
+
+        public ProcessingEvent Register(string name)
         {
             var processingEvent = ProcessingEvent.Create(name);
 
             _repository.Add(processingEvent);
             _repository.SaveChanges();
 
-            return processingEvent.Id;
+            return processingEvent;
         }
     }
 }

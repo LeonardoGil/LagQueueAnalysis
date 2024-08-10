@@ -1,7 +1,13 @@
-﻿namespace LagQueueApplication.Interfaces
+﻿using LagQueueDomain.Entities;
+
+namespace LagQueueApplication.Interfaces
 {
     public interface IProcessingEventService
     {
-        Guid Register(string name);
+        ProcessingEvent Register(string name);
+
+        void ProcessFail(ProcessingEvent processingEvent, Exception ex);
+
+        void ProcessSuccess(ProcessingEvent processingEvent);
     }
 }

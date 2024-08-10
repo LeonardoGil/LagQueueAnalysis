@@ -1,4 +1,5 @@
 ﻿using LagQueueApplication.Interfaces;
+using LagQueueDomain.Entities;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace LagQueueApplication.Services
@@ -14,20 +15,31 @@ namespace LagQueueApplication.Services
             _processingEventService = processingEventService;
         }
 
-        public Task<Guid> On<Event, ProcessingEvent>(Event obj, string serviceName = nameof(ExecuteProcessingEventService)) where ProcessingEvent : IProcessingEvent<Event>
+        public async Task<Guid> On<Event, ProcessingEventService>(Event obj, string serviceName = nameof(ExecuteProcessingEventService)) where ProcessingEventService : IProcessingEvent<Event>
         {
-            var processingId = _processingEventService.Register(serviceName);
+            ProcessingEvent processingEvent = _processingEventService.Register(serviceName);
 
-            Task.Run(async () =>
+            _ = Task.Run(async () =>
             {
                 using var scope = _scopeFactory.CreateScope();
 
-                var service = scope.ServiceProvider.GetRequiredService<ProcessingEvent>();
+                var service = scope.ServiceProvider.GetRequiredService<ProcessingEventService>();
 
-                await service.Run(obj);
+                var processingEventService = scope.ServiceProvider.GetRequiredService<IProcessingEventService>();
+
+                try
+                {
+                    await service.Run(obj);
+
+                    processingEventService.ProcessSuccess(processingEvent);
+                }
+                catch (Exception exception)
+                {
+                    processingEventService.ProcessFail(processingEvent, exception);
+                }
             });
 
-            return Task.FromResult(processingId);
+            return processingEvent.Id;
         }
     }
 }
