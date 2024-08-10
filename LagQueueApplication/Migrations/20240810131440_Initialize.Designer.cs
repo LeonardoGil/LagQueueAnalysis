@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LagQueueApplication.Migrations
 {
     [DbContext(typeof(LagQueueContext))]
-    [Migration("20240807030616_Init")]
-    partial class Init
+    [Migration("20240810131440_Initialize")]
+    partial class Initialize
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -43,7 +43,7 @@ namespace LagQueueApplication.Migrations
                     b.Property<Guid>("QueueId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("ReplyToId")
+                    b.Property<Guid?>("ReplyToId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Type")
@@ -101,7 +101,7 @@ namespace LagQueueApplication.Migrations
             modelBuilder.Entity("LagQueueDomain.Entities.Message", b =>
                 {
                     b.HasOne("LagQueueDomain.Entities.Queue", "Queue")
-                        .WithMany()
+                        .WithMany("Messages")
                         .HasForeignKey("QueueId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -109,12 +109,16 @@ namespace LagQueueApplication.Migrations
                     b.HasOne("LagQueueDomain.Entities.Queue", "ReplyTo")
                         .WithMany()
                         .HasForeignKey("ReplyToId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Queue");
 
                     b.Navigation("ReplyTo");
+                });
+
+            modelBuilder.Entity("LagQueueDomain.Entities.Queue", b =>
+                {
+                    b.Navigation("Messages");
                 });
 #pragma warning restore 612, 618
         }

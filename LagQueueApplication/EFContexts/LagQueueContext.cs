@@ -1,4 +1,5 @@
-﻿using LagQueueDomain.Entities;
+﻿using LagQueueApplication.EFContexts.EntityConfigurations;
+using LagQueueDomain.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace LagQueueApplication.EFContexts
@@ -17,6 +18,9 @@ namespace LagQueueApplication.EFContexts
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.SetMessageEntityConfigurations();
         }
     }
 }

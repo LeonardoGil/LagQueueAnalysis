@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace LagQueueApplication.Migrations
 {
     /// <inheritdoc />
-    public partial class Init : Migration
+    public partial class Initialize : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -49,7 +49,7 @@ namespace LagQueueApplication.Migrations
                     Payload = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Expiration = table.Column<long>(type: "bigint", nullable: false),
                     QueueId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ReplyToId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    ReplyToId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -65,7 +65,7 @@ namespace LagQueueApplication.Migrations
                         column: x => x.ReplyToId,
                         principalTable: "Queues",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(

@@ -16,12 +16,10 @@ namespace LagQueueDomain.Entities
 
         
         public Guid QueueId { get; set; }
-
         public virtual Queue Queue { get; set; }
-        
-        
-        public Guid ReplyToId { get; set; }
 
+
+        public Guid? ReplyToId { get; set; }
         public virtual Queue ReplyTo { get; set; }
     }
 }
