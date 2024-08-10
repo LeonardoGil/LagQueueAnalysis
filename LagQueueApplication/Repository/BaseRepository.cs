@@ -31,5 +31,10 @@ namespace LagQueueApplication.Repository
         }
 
         public void SaveChanges() => DbContext.SaveChanges();
+
+        public bool IsTracking<T>(T entity) where T : class
+        {
+            return DbContext.ChangeTracker.Entries<T>().Any(e => e.Entity == entity); 
+        }
     }
 }
