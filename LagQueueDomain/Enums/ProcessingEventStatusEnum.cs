@@ -4,7 +4,7 @@
     {
         Running = 0,
 
-        Sucess = 1, 
+        Success = 1, 
 
         Fail = 2
     }

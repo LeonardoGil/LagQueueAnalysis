@@ -21,7 +21,7 @@ namespace LagQueueDomain.Entities
 
         public void SetSucess()
         {
-            Status = ProcessingEventStatusEnum.Sucess;
+            Status = ProcessingEventStatusEnum.Success;
             End = DateTime.UtcNow;
         }
 
