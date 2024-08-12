@@ -15,7 +15,7 @@ namespace LagQueueApplication.Services
             _processingEventService = processingEventService;
         }
 
-        public async Task<Guid> On<Event, ProcessingEventService>(Event obj, string serviceName = nameof(ExecuteProcessingEventService)) where ProcessingEventService : IProcessingEvent<Event>
+        public Task<Guid> On<Event, ProcessingEventService>(Event obj, string serviceName = nameof(ExecuteProcessingEventService)) where ProcessingEventService : IProcessingEvent<Event>
         {
             ProcessingEvent processingEvent = _processingEventService.Register(serviceName);
 
@@ -39,7 +39,7 @@ namespace LagQueueApplication.Services
                 }
             });
 
-            return processingEvent.Id;
+            return Task.FromResult(processingEvent.Id);
         }
     }
 }
