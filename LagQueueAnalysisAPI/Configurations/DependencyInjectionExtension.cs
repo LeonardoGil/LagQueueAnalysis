@@ -4,6 +4,8 @@ using LagQueueApplication.Processings;
 using LagQueueApplication.Repository;
 using LagQueueApplication.Services;
 using LagQueueApplication.Services.Domains;
+using LagRabbitMQ.Interfaces;
+using LagRabbitMQ.Services;
 using Microsoft.EntityFrameworkCore;
 
 namespace LagQueueAnalysisAPI.Configurations
@@ -18,6 +20,7 @@ namespace LagQueueAnalysisAPI.Configurations
             // Services
             services.AddTransient<IProcessingEventService, ProcessingEventService>();
             services.AddTransient<IExecuteProcessingEventService, ExecuteProcessingEventService>();
+            services.AddTransient<IQueueRabbitServices, QueueRabbitServices>();
 
             // Events
             services.AddTransient<IQueueRegisterProcessingEvent, QueueRegisterProcessingEvent>();

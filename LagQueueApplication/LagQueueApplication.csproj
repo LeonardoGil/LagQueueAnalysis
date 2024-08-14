@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\LagQueueDomain\LagQueueDomain.csproj" />
+    <ProjectReference Include="..\LagRabbitMQ\LagRabbitMQ.csproj" />
   </ItemGroup>
 
 </Project>
