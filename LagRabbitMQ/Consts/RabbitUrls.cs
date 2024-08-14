@@ -2,6 +2,6 @@
 {
     public static class RabbitUrls
     {
-        public const string QueueList = "/api/queues";
+        public const string QueueList = "api/queues";
     }
 }
