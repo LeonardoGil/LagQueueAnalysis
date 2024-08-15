@@ -1,4 +1,5 @@
-﻿using LagQueueApplication.EFContexts;
+﻿using LagQueueApplication;
+using LagQueueApplication.EFContexts;
 using LagQueueApplication.Interfaces;
 using LagQueueApplication.Processings;
 using LagQueueApplication.Repository;
@@ -32,6 +33,11 @@ namespace LagQueueAnalysisAPI.Configurations
             var connectionString = configuration.GetConnectionString("LagQueueAnalysisDB");
 
             services.AddDbContext<LagQueueContext>(options => options.UseSqlServer(connectionString, o => o.MigrationsAssembly("LagQueueApplication")));
+        }
+
+        public static void AddMappers(this IServiceCollection services)
+        {
+            services.AddAutoMapper(typeof(ApplicationModule));
         }
     }
 }

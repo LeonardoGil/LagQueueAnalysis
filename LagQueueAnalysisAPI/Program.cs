@@ -16,6 +16,7 @@ namespace LagQueueAnalysisAPI
             builder.Services.AddSwaggerGen();
 
             builder.Services.AddServices();
+            builder.Services.AddMappers();
             builder.Services.AddDbContext(builder.Configuration);
 
             var app = builder.Build();
