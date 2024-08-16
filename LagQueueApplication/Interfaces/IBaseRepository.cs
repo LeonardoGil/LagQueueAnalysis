@@ -6,11 +6,11 @@ namespace LagQueueApplication.Interfaces
     {
         LagQueueContext DbContext { get; }
 
-        T Add<T>(T entity);
-        T Update<T>(T entity);
+        void Add<T>(T entity);
+        void AddRange<T>(IList<T> entities) where T : class;
+        void Update<T>(T entity);
 
         bool IsTracking<T>(T entity) where T : class;
-
         void SaveChanges();
     }
 }

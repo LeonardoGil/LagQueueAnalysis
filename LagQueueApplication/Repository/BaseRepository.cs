@@ -14,20 +14,28 @@ namespace LagQueueApplication.Repository
             _dbContext = dbContext;
         }
 
-        public T Add<T>(T entity)
+        public void Add<T>(T entity)
         {
             if (entity is null)
-                return entity;
+                return;
 
-            return (T)DbContext.Add(entity).Entity;
+            DbContext.Add(entity);
         }
 
-        public T Update<T>(T entity)
+        public void AddRange<T>(IList<T> entities) where T : class
+        {
+            if (!entities.Any())
+                return;
+
+            DbContext.Set<T>().AddRange(entities);
+        }
+
+        public void Update<T>(T entity)
         {
             if (entity is null)
-                return entity;
+                return;
 
-            return (T)DbContext.Update(entity).Entity;
+            DbContext.Update(entity);
         }
 
         public void SaveChanges() => DbContext.SaveChanges();
@@ -36,5 +44,7 @@ namespace LagQueueApplication.Repository
         {
             return DbContext.ChangeTracker.Entries<T>().Any(e => e.Entity == entity); 
         }
+
+
     }
 }

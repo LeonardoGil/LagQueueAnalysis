@@ -19,13 +19,17 @@ namespace LagQueueAnalysisAPI.Configurations
             services.AddTransient<IBaseRepository, BaseRepository>();
 
             // Services
-            services.AddTransient<IProcessingEventService, ProcessingEventService>();
             services.AddTransient<IExecuteProcessingEventService, ExecuteProcessingEventService>();
+
+            // Services Domain
+            services.AddTransient<IProcessingEventService, ProcessingEventService>();
+            services.AddTransient<IQueueService, QueueService>();
+            
+            // Services Rabbit
             services.AddTransient<IQueueRabbitServices, QueueRabbitServices>();
 
             // Events
             services.AddTransient<IQueueRegisterProcessingEvent, QueueRegisterProcessingEvent>();
-
         }
 
         public static void AddDbContext(this IServiceCollection services, IConfiguration configuration)
