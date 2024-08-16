@@ -20,7 +20,7 @@ namespace LagQueueAnalysisAPI.Controllers
         {
             try
             {
-                var processingId = await _executeProcessingEventService.On<QueueRegisterEvent, IQueueRegisterProcessingEvent>(new QueueRegisterEvent());
+                var processingId = await _executeProcessingEventService.On<RegisterQueueEvent, IRegisterQueueProcessingEvent>(new RegisterQueueEvent());
 
                 return Ok(processingId);
             }

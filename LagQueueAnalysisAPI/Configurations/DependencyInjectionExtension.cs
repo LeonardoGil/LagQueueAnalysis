@@ -29,7 +29,7 @@ namespace LagQueueAnalysisAPI.Configurations
             services.AddTransient<IQueueRabbitServices, QueueRabbitServices>();
 
             // Events
-            services.AddTransient<IQueueRegisterProcessingEvent, QueueRegisterProcessingEvent>();
+            services.AddTransient<IRegisterQueueProcessingEvent, RegisterQueueProcessingEvent>();
         }
 
         public static void AddDbContext(this IServiceCollection services, IConfiguration configuration)

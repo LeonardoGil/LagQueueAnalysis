@@ -2,7 +2,7 @@
 
 namespace LagQueueApplication.Interfaces
 {
-    public interface IQueueRegisterProcessingEvent : IProcessingEvent<QueueRegisterEvent>
+    public interface IRegisterQueueProcessingEvent : IProcessingEvent<RegisterQueueEvent>
     {
     }
 }
