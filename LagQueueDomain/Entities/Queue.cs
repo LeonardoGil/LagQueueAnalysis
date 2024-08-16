@@ -9,6 +9,8 @@ namespace LagQueueDomain.Entities
 
         public string Name { get; set; }
 
+        public string Host { get; set; }
+
         public virtual List<Message> Messages { get; set; }
     }
 }
