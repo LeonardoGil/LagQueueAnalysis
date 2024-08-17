@@ -27,7 +27,10 @@ namespace LagQueueDomain.Comparers
 
         public int GetHashCode(Queue obj)
         {
-            throw new System.NotImplementedException();
+            if (obj is null) 
+                return 0;
+
+            return obj.Name.GetHashCode() ^ obj.Host.GetHashCode();
         }
     }
 }
