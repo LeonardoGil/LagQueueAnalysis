@@ -12,5 +12,7 @@ namespace LagQueueApplication.Interfaces
 
         bool IsTracking<T>(T entity) where T : class;
         void SaveChanges();
+
+        IQueryable<T> Get<T>(Func<T, bool>? where = null) where T : class;
     }
 }

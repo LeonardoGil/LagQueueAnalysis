@@ -21,11 +21,19 @@ namespace LagQueueApplication.Processings
 
         public async Task Run(RegisterQueueEvent command)
         {
-            var queueDtoList = await _queueRabbitServices.Request();
+            try
+            {
+                var queueDtoList = await _queueRabbitServices.QueueListRequest();
 
-            var queues = _mapper.Map<List<Queue>>(queueDtoList);
+                var queues = _mapper.Map<List<Queue>>(queueDtoList);
 
-            _queueService.Register(queues);
+                _queueService.Register(queues);
+            }
+            catch (Exception ex)
+            {
+                // TODO: Pensar numa forma de Tratar...
+                throw new Exception($"Ocorreu um erro inesperado no {command}. InnerExceptionMessage: {ex.Message}", ex);
+            }
         }
     }
 }

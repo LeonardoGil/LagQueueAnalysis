@@ -38,13 +38,19 @@ namespace LagQueueApplication.Repository
             DbContext.Update(entity);
         }
 
+
+
         public void SaveChanges() => DbContext.SaveChanges();
 
         public bool IsTracking<T>(T entity) where T : class
         {
-            return DbContext.ChangeTracker.Entries<T>().Any(e => e.Entity == entity); 
+            return DbContext.ChangeTracker.Entries<T>().Any(e => e.Entity == entity);
         }
 
 
+        public IQueryable<T> Get<T>(Func<T, bool>? where = null) where T : class
+        {
+            return _dbContext.Set<T>().AsQueryable();
+        }
     }
 }
