@@ -6,6 +6,8 @@ namespace LagRabbitMQ.Interfaces
 {
     public interface IQueueRabbitServices
     {
-        Task<List<QueueDto>> Request();
+        Task<List<QueueDto>> QueueListRequest();
+
+        Task<List<object>> QueueMessagesGetRequest(string vHost, string queue);
     }
 }
