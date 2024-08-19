@@ -8,6 +8,9 @@ namespace LagRabbitMQ.Interfaces
     {
         Task<List<QueueDto>> QueueListRequest();
 
-        Task<List<object>> QueueMessagesGetRequest(string vHost, string queue);
+        Task<QueueDto> QueueRequest(string vHost, string queue);
+
+        Task<List<MessageDto>> QueueMessagesGetRequest(string vHost, string queue);
+
     }
 }

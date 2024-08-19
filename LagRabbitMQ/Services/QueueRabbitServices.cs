@@ -12,26 +12,43 @@ namespace LagRabbitMQ.Services
     {
         public async Task<List<QueueDto>> QueueListRequest()
         {
-            var url = $"http://localhost:15672/{RabbitUrls.QueueList}";
+            var url = $"{RabbitUrls.DefaultUrl}{RabbitUrls.QueueList}";
 
             var authToken = GetAuthToken();
 
             return await RequestServices.Get<List<QueueDto>>(url, authToken);
         }
 
-        public async Task<List<object>> QueueMessagesGetRequest(string vHost, string queue)
+        public async Task<List<MessageDto>> QueueMessagesGetRequest(string vHost, string queue)
         {
+            if (vHost == "/")
+                vHost = RabbitUrls.VHostDefault;
+
             var url = string.Format($"{RabbitUrls.DefaultUrl}{RabbitUrls.QueueMessagesGet}", vHost, queue);
 
             var authToken = GetAuthToken();
 
-            throw new NotImplementedException();
+            var body = new
+            {
+                ackmode = "ack_requeue_true",
+                encoding = "auto",
+                count = 500
+            };
 
-            // TODO: Implementar...
-
-            return await RequestServices.Get<List<object>>(url, authToken);
+            return await RequestServices.Post<List<MessageDto>>(url, authToken, body);
         }
 
+        public async Task<QueueDto> QueueRequest(string vHost, string queue)
+        {
+            if (vHost == "/")
+                vHost = RabbitUrls.VHostDefault;
+
+            var url = string.Format($"{RabbitUrls.DefaultUrl}{RabbitUrls.Queue}", vHost, queue);
+
+            var authToken = GetAuthToken();
+
+            return await RequestServices.Get<QueueDto>(url, authToken);
+        }
 
         /// <summary>
         ///     Gera token de autenticação da API do RabbitMQ

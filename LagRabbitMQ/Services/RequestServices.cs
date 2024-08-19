@@ -2,6 +2,7 @@
 using System;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace LagRabbitMQ.Services
@@ -20,6 +21,30 @@ namespace LagRabbitMQ.Services
             };
 
             HttpCliente.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", token);
+
+            var httpResult = await HttpCliente.SendAsync(httpRequest);
+
+            var result = await httpResult.Content.ReadAsStringAsync();
+
+            if (!httpResult.IsSuccessStatusCode)
+                throw new Exception(result);
+
+            return JsonConvert.DeserializeObject<T>(result);
+        }
+
+        public static async Task<T> Post<T>(string url, string token, object body) where T : class
+        {
+            var httpRequest = new HttpRequestMessage
+            {
+                RequestUri = new Uri(url),
+                Method = HttpMethod.Post
+            };
+
+            var bodyJson = JsonConvert.SerializeObject(body);
+
+            HttpCliente.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", token);
+
+            httpRequest.Content = new StringContent(bodyJson, Encoding.UTF8, "application/json");
 
             var httpResult = await HttpCliente.SendAsync(httpRequest);
 
