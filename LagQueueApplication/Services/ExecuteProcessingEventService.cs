@@ -22,13 +22,13 @@ namespace LagQueueApplication.Services
             _ = Task.Run(async () =>
             {
                 using var scope = _scopeFactory.CreateScope();
-
-                var service = scope.ServiceProvider.GetRequiredService<ProcessingEventService>();
-
+                
                 var processingEventService = scope.ServiceProvider.GetRequiredService<IProcessingEventService>();
 
                 try
                 {
+                    var service = scope.ServiceProvider.GetRequiredService<ProcessingEventService>();
+
                     await service.Run(obj);
 
                     processingEventService.ProcessSuccess(processingEvent);
