@@ -30,6 +30,7 @@ namespace LagQueueAnalysisAPI.Configurations
 
             // Events
             services.AddTransient<IRegisterQueueProcessingEvent, RegisterQueueProcessingEvent>();
+            services.AddTransient<IRegisterQueueMessagesProcessingEvent, RegisterQueueMessagesProcessingEvent>();
         }
 
         public static void AddDbContext(this IServiceCollection services, IConfiguration configuration)
