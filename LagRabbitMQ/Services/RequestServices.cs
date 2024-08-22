@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 
 namespace LagRabbitMQ.Services
 {
-    // Mudar
     public static class RequestServices
     {
         public static HttpClient HttpCliente = new HttpClient();
@@ -55,5 +54,10 @@ namespace LagRabbitMQ.Services
 
             return JsonConvert.DeserializeObject<T>(result);
         }
+
+        /// <summary>
+        ///     Gera token de autenticação da API do RabbitMQ
+        /// </summary>
+        public static string GetAuthToken(string user, string password) => Convert.ToBase64String(Encoding.UTF8.GetBytes($"{user}:{password}"));
     }
 }

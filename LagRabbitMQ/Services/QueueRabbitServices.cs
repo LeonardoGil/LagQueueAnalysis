@@ -14,7 +14,7 @@ namespace LagRabbitMQ.Services
         {
             var url = $"{RabbitUrls.DefaultUrl}{RabbitUrls.QueueList}";
 
-            var authToken = GetAuthToken();
+            var authToken = RequestServices.GetAuthToken("guest", "guest");
 
             return await RequestServices.Get<List<QueueDto>>(url, authToken);
         }
@@ -26,7 +26,7 @@ namespace LagRabbitMQ.Services
 
             var url = string.Format($"{RabbitUrls.DefaultUrl}{RabbitUrls.QueueMessagesGet}", vHost, queue);
 
-            var authToken = GetAuthToken();
+            var authToken = RequestServices.GetAuthToken("guest", "guest");
 
             var body = new
             {
@@ -45,14 +45,9 @@ namespace LagRabbitMQ.Services
 
             var url = string.Format($"{RabbitUrls.DefaultUrl}{RabbitUrls.Queue}", vHost, queue);
 
-            var authToken = GetAuthToken();
+            var authToken = RequestServices.GetAuthToken("guest", "guest");
 
             return await RequestServices.Get<QueueDto>(url, authToken);
         }
-
-        /// <summary>
-        ///     Gera token de autenticação da API do RabbitMQ
-        /// </summary>
-        private string GetAuthToken(string user = "guest", string password = "guest") => Convert.ToBase64String(Encoding.UTF8.GetBytes($"{user}:{password}"));
     }
 }

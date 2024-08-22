@@ -4,10 +4,10 @@
     {
         public const string DefaultUrl = "http://localhost:15672/";
 
-
-
+        public const string Queue = "api/queues/{0}/{1}";
         public const string QueueList = "api/queues";
-
         public const string QueueMessagesGet = "api/queues/{0}/{1}/get";
+
+        public const string VHostDefault = "%2f";
     }
 }
