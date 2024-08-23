@@ -17,6 +17,7 @@ namespace LagQueueAnalysisAPI.Configurations
         {
             // Repository
             services.AddTransient<IBaseRepository, BaseRepository>();
+            services.AddTransient<IQueueRepository, QueueRepository>();
 
             // Services
             services.AddTransient<IExecuteProcessingEventService, ExecuteProcessingEventService>();
@@ -24,6 +25,7 @@ namespace LagQueueAnalysisAPI.Configurations
             // Services Domain
             services.AddTransient<IProcessingEventService, ProcessingEventService>();
             services.AddTransient<IQueueService, QueueService>();
+            services.AddTransient<IMessageService, MessageService>();
             
             // Services Rabbit
             services.AddTransient<IQueueRabbitServices, QueueRabbitServices>();
