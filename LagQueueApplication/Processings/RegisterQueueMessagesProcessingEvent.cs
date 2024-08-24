@@ -60,7 +60,7 @@ namespace LagQueueApplication.Processings
         private async Task<List<Message>> BatchMessagesRequest(string vhost, string name, int take)
         {
             //TODO: Adicionar parametro Take
-            var messagesDto = await _queueRabbitServices.QueueMessagesGetRequest(vhost, name);
+            var messagesDto = await _queueRabbitServices.QueueMessagesGetRequest(vhost, name, take);
 
             return _mapper.Map<List<Message>>(messagesDto);
         }

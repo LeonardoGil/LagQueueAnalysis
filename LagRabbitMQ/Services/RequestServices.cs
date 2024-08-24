@@ -11,11 +11,11 @@ namespace LagRabbitMQ.Services
     {
         public static HttpClient HttpCliente = new HttpClient();
 
-        public static async Task<T> Get<T>(string url, string token) where T : class
+        public static async Task<T> Get<T>(Uri url, string token) where T : class
         {
             var httpRequest = new HttpRequestMessage
             {
-                RequestUri = new Uri(url),
+                RequestUri = url,
                 Method = HttpMethod.Get
             };
 
@@ -31,11 +31,11 @@ namespace LagRabbitMQ.Services
             return JsonConvert.DeserializeObject<T>(result);
         }
 
-        public static async Task<T> Post<T>(string url, string token, object body) where T : class
+        public static async Task<T> Post<T>(Uri url, string token, object body) where T : class
         {
             var httpRequest = new HttpRequestMessage
             {
-                RequestUri = new Uri(url),
+                RequestUri = url,
                 Method = HttpMethod.Post
             };
 

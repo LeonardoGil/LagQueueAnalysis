@@ -3,6 +3,7 @@ using LagRabbitMQ.DTOs;
 using LagRabbitMQ.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -12,19 +13,22 @@ namespace LagRabbitMQ.Services
     {
         public async Task<List<QueueDto>> QueueListRequest()
         {
-            var url = $"{RabbitUrls.DefaultUrl}{RabbitUrls.QueueList}";
+            var baseUrl = new Uri(RabbitUrls.DefaultUrl);
+
+            var url = new Uri(baseUrl, RabbitUrls.QueueList);
 
             var authToken = RequestServices.GetAuthToken("guest", "guest");
 
             return await RequestServices.Get<List<QueueDto>>(url, authToken);
         }
 
-        public async Task<List<MessageDto>> QueueMessagesGetRequest(string vHost, string queue)
+        public async Task<List<MessageDto>> QueueMessagesGetRequest(string vHost, string queue, int take = 500)
         {
-            if (vHost == "/")
-                vHost = RabbitUrls.VHostDefault;
+            var baseUrl = new Uri(RabbitUrls.DefaultUrl);
 
-            var url = string.Format($"{RabbitUrls.DefaultUrl}{RabbitUrls.QueueMessagesGet}", vHost, queue);
+            var endpoint = string.Format(RabbitUrls.QueueMessagesGet, GetHost(vHost), queue);
+
+            var url = new Uri(baseUrl, endpoint);
 
             var authToken = RequestServices.GetAuthToken("guest", "guest");
 
@@ -32,7 +36,7 @@ namespace LagRabbitMQ.Services
             {
                 ackmode = "ack_requeue_true",
                 encoding = "auto",
-                count = 500
+                count = take
             };
 
             return await RequestServices.Post<List<MessageDto>>(url, authToken, body);
@@ -40,14 +44,20 @@ namespace LagRabbitMQ.Services
 
         public async Task<QueueDto> QueueRequest(string vHost, string queue)
         {
-            if (vHost == "/")
-                vHost = RabbitUrls.VHostDefault;
+            var baseUrl = new Uri(RabbitUrls.DefaultUrl);
 
-            var url = string.Format($"{RabbitUrls.DefaultUrl}{RabbitUrls.Queue}", vHost, queue);
+            var endpoint = string.Format(RabbitUrls.Queue, GetHost(vHost), queue);
+
+            var url = new Uri(baseUrl, endpoint);
 
             var authToken = RequestServices.GetAuthToken("guest", "guest");
 
             return await RequestServices.Get<QueueDto>(url, authToken);
+        }
+
+        private string GetHost(string host)
+        {
+            return host.Equals("/") ? RabbitUrls.VHostDefault : host;
         }
     }
 }
