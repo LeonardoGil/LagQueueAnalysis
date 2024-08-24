@@ -1,5 +1,6 @@
 ﻿using LagQueueApplication.EFContexts;
 using LagQueueApplication.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace LagQueueApplication.Repository
 {
@@ -48,9 +49,9 @@ namespace LagQueueApplication.Repository
         }
 
 
-        public IQueryable<T> Get<T>(Func<T, bool>? where = null) where T : class
+        public DbSet<T> Get<T>(Func<T, bool>? where = null) where T : class
         {
-            return _dbContext.Set<T>().AsQueryable();
+            return _dbContext.Set<T>();
         }
     }
 }

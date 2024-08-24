@@ -1,4 +1,5 @@
 ﻿using LagQueueApplication.Interfaces;
+using LagQueueDomain.Comparers;
 using LagQueueDomain.Entities;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,11 +16,12 @@ namespace LagQueueApplication.Services.Domains
 
         public void Register(List<Message> messages)
         {
-            var messagesUpdates = _repository.Get<Message>().Where(x => messages.Contains(x)).AsNoTracking().ToList();
+            var messagesId = messages.Select(x => x.MessageId);
 
-            // TODO: Não esta funcionando
-            var messagesAdds = messages.Except(messagesUpdates).ToList();
+            var messagesUpdates = _repository.Get<Message>().Where(entity => messagesId.Contains(entity.MessageId)).AsNoTracking().ToList();
 
+            var messagesAdds = messages.Except(messagesUpdates, new MessageEqualityComparer()).ToList();
+            
             // No momento não há necessidade de atualizar as Messages
             // verificar a necessidade no Futuro...
 

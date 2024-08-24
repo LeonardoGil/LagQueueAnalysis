@@ -1,4 +1,5 @@
 ﻿using LagQueueApplication.EFContexts;
+using Microsoft.EntityFrameworkCore;
 
 namespace LagQueueApplication.Interfaces
 {
@@ -13,6 +14,6 @@ namespace LagQueueApplication.Interfaces
         bool IsTracking<T>(T entity) where T : class;
         void SaveChanges();
 
-        IQueryable<T> Get<T>(Func<T, bool>? where = null) where T : class;
+        DbSet<T> Get<T>(Func<T, bool>? where = null) where T : class;
     }
 }
