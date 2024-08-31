@@ -38,9 +38,11 @@ namespace LagQueueAnalysisAPI.Configurations
 
         public static void AddDbContext(this IServiceCollection services, IConfiguration configuration)
         {
-            var connectionString = configuration.GetConnectionString("LagQueueAnalysisDB");
+            var queueConnectionString = configuration.GetConnectionString("LagQueueAnalysisDB");
+            services.AddDbContext<LagQueueContext>(options => options.UseSqlServer(queueConnectionString, o => o.MigrationsAssembly(nameof(LagQueueAnalysisInfra))));
 
-            services.AddDbContext<LagQueueContext>(options => options.UseSqlServer(connectionString, o => o.MigrationsAssembly(nameof(LagQueueAnalysisInfra))));
+            var environmentConnectionString = configuration.GetConnectionString("LagEnvironmentDB");
+            services.AddDbContext<LagEnvironmentContext>(options => options.UseSqlServer(environmentConnectionString, o => o.MigrationsAssembly(nameof(LagQueueAnalysisInfra))));
         }
 
         public static void AddMappers(this IServiceCollection services)
