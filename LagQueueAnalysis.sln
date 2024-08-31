@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LagQueueApplication", "LagQ
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LagRabbitMQ", "LagRabbitMQ\LagRabbitMQ.csproj", "{6DBAA5E5-2C35-4A94-892D-6C01D2B8F54C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LagQueueAnalysisInfra", "LagQueueAnalysisInfra\LagQueueAnalysisInfra.csproj", "{A9E9A968-04D1-4B0C-A289-DF63E824A860}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{6DBAA5E5-2C35-4A94-892D-6C01D2B8F54C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6DBAA5E5-2C35-4A94-892D-6C01D2B8F54C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6DBAA5E5-2C35-4A94-892D-6C01D2B8F54C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A9E9A968-04D1-4B0C-A289-DF63E824A860}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A9E9A968-04D1-4B0C-A289-DF63E824A860}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A9E9A968-04D1-4B0C-A289-DF63E824A860}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A9E9A968-04D1-4B0C-A289-DF63E824A860}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using LagQueueAnalysisInfra.Interfaces;
 using LagQueueApplication.Interfaces;
 using LagQueueApplication.Processings.Events;
 using LagQueueDomain.Entities;

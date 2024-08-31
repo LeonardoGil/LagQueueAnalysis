@@ -1,6 +1,6 @@
 ﻿using LagQueueDomain.Entities;
 
-namespace LagQueueApplication.Interfaces
+namespace LagQueueAnalysisInfra.Interfaces
 {
     public interface IQueueRepository
     {

@@ -1,8 +1,8 @@
-﻿using LagQueueApplication.EFContexts;
-using LagQueueApplication.Interfaces;
+﻿using LagQueueAnalysisInfra.EFContexts;
+using LagQueueAnalysisInfra.Interfaces;
 using LagQueueDomain.Entities;
 
-namespace LagQueueApplication.Repository
+namespace LagQueueAnalysisInfra.Repositories
 {
     public class QueueRepository : BaseRepository, IQueueRepository
     {

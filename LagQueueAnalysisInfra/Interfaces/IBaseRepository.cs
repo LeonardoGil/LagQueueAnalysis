@@ -1,7 +1,7 @@
-﻿using LagQueueApplication.EFContexts;
+﻿using LagQueueAnalysisInfra.EFContexts;
 using Microsoft.EntityFrameworkCore;
 
-namespace LagQueueApplication.Interfaces
+namespace LagQueueAnalysisInfra.Interfaces
 {
     public interface IBaseRepository
     {

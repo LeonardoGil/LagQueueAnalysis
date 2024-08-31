@@ -1,8 +1,9 @@
-﻿using LagQueueApplication;
-using LagQueueApplication.EFContexts;
+﻿using LagQueueAnalysisInfra.EFContexts;
+using LagQueueAnalysisInfra.Interfaces;
+using LagQueueAnalysisInfra.Repositories;
+using LagQueueApplication;
 using LagQueueApplication.Interfaces;
 using LagQueueApplication.Processings;
-using LagQueueApplication.Repository;
 using LagQueueApplication.Services;
 using LagQueueApplication.Services.Domains;
 using LagRabbitMQ.Interfaces;
@@ -39,7 +40,7 @@ namespace LagQueueAnalysisAPI.Configurations
         {
             var connectionString = configuration.GetConnectionString("LagQueueAnalysisDB");
 
-            services.AddDbContext<LagQueueContext>(options => options.UseSqlServer(connectionString, o => o.MigrationsAssembly("LagQueueApplication")));
+            services.AddDbContext<LagQueueContext>(options => options.UseSqlServer(connectionString, o => o.MigrationsAssembly(nameof(LagQueueAnalysisInfra))));
         }
 
         public static void AddMappers(this IServiceCollection services)

@@ -1,6 +1,6 @@
-﻿using LagQueueApplication.Interfaces;
+﻿using LagQueueAnalysisInfra.Interfaces;
+using LagQueueApplication.Interfaces;
 using LagQueueDomain.Entities;
-using System;
 
 namespace LagQueueApplication.Services.Domains
 {

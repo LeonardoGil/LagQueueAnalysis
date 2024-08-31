@@ -1,4 +1,5 @@
-﻿using LagQueueApplication.Interfaces;
+﻿using LagQueueAnalysisInfra.Interfaces;
+using LagQueueApplication.Interfaces;
 using LagQueueDomain.Comparers;
 using LagQueueDomain.Entities;
 using Microsoft.EntityFrameworkCore;

@@ -1,7 +1,7 @@
 ﻿using LagQueueDomain.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace LagQueueApplication.EFContexts.EntityConfigurations
+namespace LagQueueAnalysisInfra.EFContexts.EntityConfigurations
 {
     internal static class MessageEntityConfigurations
     {
