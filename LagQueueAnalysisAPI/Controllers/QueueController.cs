@@ -29,5 +29,21 @@ namespace LagQueueAnalysisAPI.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [Route("Messages/Register")]
+        [HttpPost]
+        public async Task<IActionResult> MessageRegister([FromBody]RegisterQueueMessagesEvent request)
+        {
+            try
+            {
+                var processingId = await _executeProcessingEventService.On<RegisterQueueMessagesEvent, IRegisterQueueMessagesProcessingEvent>(request);
+
+                return Ok(processingId);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }
