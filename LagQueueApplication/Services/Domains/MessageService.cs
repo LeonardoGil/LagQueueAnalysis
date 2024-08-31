@@ -1,4 +1,5 @@
-﻿using LagQueueAnalysisInfra.Interfaces;
+﻿using LagQueueAnalysisInfra.EFContexts;
+using LagQueueAnalysisInfra.Interfaces;
 using LagQueueApplication.Interfaces;
 using LagQueueDomain.Comparers;
 using LagQueueDomain.Entities;
@@ -8,9 +9,9 @@ namespace LagQueueApplication.Services.Domains
 {
     public class MessageService : IMessageService
     {
-        private readonly IBaseRepository _repository;
+        private readonly IBaseRepository<LagQueueContext> _repository;
 
-        public MessageService(IBaseRepository repository)
+        public MessageService(IBaseRepository<LagQueueContext> repository)
         {
             _repository = repository;
         }

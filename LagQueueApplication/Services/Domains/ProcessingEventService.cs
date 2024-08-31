@@ -1,4 +1,5 @@
-﻿using LagQueueAnalysisInfra.Interfaces;
+﻿using LagQueueAnalysisInfra.EFContexts;
+using LagQueueAnalysisInfra.Interfaces;
 using LagQueueApplication.Interfaces;
 using LagQueueDomain.Entities;
 
@@ -6,9 +7,9 @@ namespace LagQueueApplication.Services.Domains
 {
     public class ProcessingEventService : IProcessingEventService
     {
-        private readonly IBaseRepository _repository;
+        private readonly IBaseRepository<LagQueueContext> _repository;
 
-        public ProcessingEventService(IBaseRepository repository)
+        public ProcessingEventService(IBaseRepository<LagQueueContext> repository)
         {
             _repository = repository;
         }

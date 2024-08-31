@@ -4,13 +4,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace LagQueueAnalysisInfra.Repositories
 {
-    public class BaseRepository : IBaseRepository
+    public class BaseRepository<Context> : IBaseRepository<Context> where Context : DbContext
     {
-        public LagQueueContext DbContext => _dbContext;
+        public Context DbContext => _dbContext;
 
-        public readonly LagQueueContext _dbContext;
+        public readonly Context _dbContext;
 
-        public BaseRepository(LagQueueContext dbContext)
+        public BaseRepository(Context dbContext)
         {
             _dbContext = dbContext;
         }

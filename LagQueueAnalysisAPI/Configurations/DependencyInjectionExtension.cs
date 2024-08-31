@@ -17,7 +17,8 @@ namespace LagQueueAnalysisAPI.Configurations
         public static void AddServices(this IServiceCollection services)
         {
             // Repository
-            services.AddTransient<IBaseRepository, BaseRepository>();
+            services.AddTransient<IBaseRepository<LagQueueContext>, BaseRepository<LagQueueContext>>();
+            services.AddTransient<IBaseRepository<LagEnvironmentContext>, BaseRepository<LagEnvironmentContext>>();
             services.AddTransient<IQueueRepository, QueueRepository>();
 
             // Services
