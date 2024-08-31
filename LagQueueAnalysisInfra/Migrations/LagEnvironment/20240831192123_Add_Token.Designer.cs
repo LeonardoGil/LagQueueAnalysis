@@ -4,6 +4,7 @@ using LagQueueAnalysisInfra.EFContexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LagQueueAnalysisInfra.Migrations.LagEnvironment
 {
     [DbContext(typeof(LagEnvironmentContext))]
-    partial class LagEnvironmentContextModelSnapshot : ModelSnapshot
+    [Migration("20240831192123_Add_Token")]
+    partial class Add_Token
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

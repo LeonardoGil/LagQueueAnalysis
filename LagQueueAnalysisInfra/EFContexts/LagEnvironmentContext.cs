@@ -1,5 +1,4 @@
-﻿using LagQueueDomain.Entities;
-
+﻿using LagEnvironmentDomain.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace LagQueueAnalysisInfra.EFContexts
@@ -11,5 +10,7 @@ namespace LagQueueAnalysisInfra.EFContexts
         }
 
         public DbSet<AnalysisEnvironment> Environments { get; set; }
+
+        public DbSet<Token> Tokens { get; set; }
     }
 }

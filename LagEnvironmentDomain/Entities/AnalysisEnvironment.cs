@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace LagQueueDomain.Entities
+namespace LagEnvironmentDomain.Entities
 {
     public class AnalysisEnvironment
     {
