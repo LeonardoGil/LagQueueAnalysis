@@ -9,10 +9,10 @@ namespace LagQueueApplication.Processings
     public class RegisterQueueProcessingEvent : IRegisterQueueProcessingEvent
     {
         private readonly IMapper _mapper;
-        private readonly IQueueRabbitServices _queueRabbitServices;
+        private readonly IQueueRabbitService _queueRabbitServices;
         private readonly IQueueService _queueService;
 
-        public RegisterQueueProcessingEvent(IMapper mapper, IQueueRabbitServices queueRabbitServices, IQueueService queueService)
+        public RegisterQueueProcessingEvent(IMapper mapper, IQueueRabbitService queueRabbitServices, IQueueService queueService)
         {
             _mapper = mapper;
             _queueRabbitServices = queueRabbitServices;
