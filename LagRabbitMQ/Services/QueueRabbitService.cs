@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace LagRabbitMQ.Services
 {
-    public class QueueRabbitServices : IQueueRabbitServices
+    public class QueueRabbitService : IQueueRabbitServices
     {
         public async Task<List<QueueDto>> QueueListRequest()
         {

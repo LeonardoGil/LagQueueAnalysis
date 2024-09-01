@@ -17,6 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\LagEnvironmentApplication\LagEnvironmentApplication.csproj" />
     <ProjectReference Include="..\LagQueueApplication\LagQueueApplication.csproj" />
     <ProjectReference Include="..\LagQueueDomain\LagQueueDomain.csproj" />
   </ItemGroup>
