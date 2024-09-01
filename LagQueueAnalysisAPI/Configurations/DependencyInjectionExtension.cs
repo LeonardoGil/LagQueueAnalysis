@@ -21,33 +21,36 @@ namespace LagQueueAnalysisAPI.Configurations
         public static void AddServices(this IServiceCollection services)
         {
             // Repositories
-            services.AddTransient<IBaseRepository<LagQueueContext>, BaseRepository<LagQueueContext>>();
-            services.AddTransient<IBaseRepository<LagEnvironmentContext>, BaseRepository<LagEnvironmentContext>>();
-            services.AddTransient<IQueueRepository, QueueRepository>();
+            services.AddScoped<IBaseRepository<LagQueueContext>, BaseRepository<LagQueueContext>>();
+            services.AddScoped<IBaseRepository<LagEnvironmentContext>, BaseRepository<LagEnvironmentContext>>();
+            services.AddScoped<IQueueRepository, QueueRepository>();
 
             // Services
-            services.AddTransient<IExecuteProcessingEventService, ExecuteProcessingEventService>();
+            services.AddScoped<IExecuteProcessingEventService, ExecuteProcessingEventService>();
 
             // Services Domain Queue
-            services.AddTransient<IProcessingEventService, ProcessingEventService>();
-            services.AddTransient<IQueueService, QueueService>();
-            services.AddTransient<IMessageService, MessageService>();
+            services.AddScoped<IProcessingEventService, ProcessingEventService>();
+            services.AddScoped<IQueueService, QueueService>();
+            services.AddScoped<IMessageService, MessageService>();
 
             // Services Domain Environment
-            services.AddTransient<IEnvironmentService, EnvironmentService>();
-            services.AddTransient<ITokenService, TokenService>();
-            services.AddTransient<IAuthenticationService, AuthenticationService>();
+            services.AddScoped<IEnvironmentService, EnvironmentService>();
+            services.AddScoped<ITokenService, TokenService>();
+            services.AddScoped<IAuthenticationService, AuthenticationService>();
 
             // Services Rabbit
-            services.AddTransient<IQueueRabbitServices, QueueRabbitService>();
-            services.AddTransient<IOverviewRabbitService, OverviewRabbitService>();
+            services.AddScoped<IQueueRabbitService, QueueRabbitService>();
+            services.AddScoped<IOverviewRabbitService, OverviewRabbitService>();
 
             // Events
-            services.AddTransient<IRegisterQueueProcessingEvent, RegisterQueueProcessingEvent>();
-            services.AddTransient<IRegisterQueueMessagesProcessingEvent, RegisterQueueMessagesProcessingEvent>();
+            services.AddScoped<IRegisterQueueProcessingEvent, RegisterQueueProcessingEvent>();
+            services.AddScoped<IRegisterQueueMessagesProcessingEvent, RegisterQueueMessagesProcessingEvent>();
 
             // Factories
-            services.AddTransient<ILagQueueContextFactory, LagQueueContextFactory>();
+            services.AddScoped<ILagQueueContextFactory, LagQueueContextFactory>();
+
+            // Outros
+            services.AddHttpContextAccessor();
         }
 
         public static void AddDbContext(this IServiceCollection services, IConfiguration configuration)
@@ -55,7 +58,6 @@ namespace LagQueueAnalysisAPI.Configurations
             var environmentConnectionString = configuration.GetConnectionString("LagEnvironmentDB");
             services.AddDbContext<LagEnvironmentContext>(options => options.UseSqlServer(environmentConnectionString, o => o.MigrationsAssembly(nameof(LagQueueAnalysisInfra))));
 
-            services.AddHttpContextAccessor();
             services.AddScoped<LagQueueContext>(provider =>
             {
                 var httpContextAcessor = provider.GetRequiredService<IHttpContextAccessor>();
