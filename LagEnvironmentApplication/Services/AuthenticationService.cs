@@ -1,7 +1,9 @@
 ﻿using LagEnvironmentApplication.Interfaces;
 using LagEnvironmentApplication.Models;
+using LagEnvironmentDomain.Entities;
 using LagRabbitMQ.Interfaces;
 using LagRabbitMQ.Settings;
+using System;
 
 namespace LagEnvironmentApplication.Services
 {
@@ -9,21 +11,21 @@ namespace LagEnvironmentApplication.Services
     {
         private readonly IOverviewRabbitService _overviewService;
         private readonly IEnvironmentService _environmentService;
-        private readonly ITokenService _tokenService;
+        private readonly ITokenStore _tokenStore;
 
         public AuthenticationService(IOverviewRabbitService overviewService,
                                      IEnvironmentService environmentService,
-                                     ITokenService tokenService)
+                                     ITokenStore tokenStore)
         {
             _overviewService = overviewService;
             _environmentService = environmentService;
-            _tokenService = tokenService;
+            _tokenStore = tokenStore;
         }
 
-        public async Task<string> Authenticate(AuthenticateModel authenticate)
+        public async Task<Guid> Authenticate(AuthenticateModel authenticate)
         {
             if (await ValidateConnectionWithRabbitMQ(authenticate))
-                return "Conexão com RabbitMQ Inválida";
+                throw new Exception("Conexão com RabbitMQ Inválida");
 
             var generateEnvironment = new GenerateEnvironmentModel
             {
@@ -33,9 +35,16 @@ namespace LagEnvironmentApplication.Services
 
             var environment = await _environmentService.ToGenerate(generateEnvironment);
 
-            var token = _tokenService.Register(environment);
+            var token = _tokenStore.GetValidTokenByEnvironmentId(environment.Id);
 
-            return token.Key;
+            if (token is null)
+            {
+                token = Token.Create(environment);
+                
+                _tokenStore.SetToken(token.Id, token);
+            }
+
+            return token.Id;
         }
 
         private async Task<bool> ValidateConnectionWithRabbitMQ(AuthenticateModel authenticate)

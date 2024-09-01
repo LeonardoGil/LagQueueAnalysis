@@ -1,6 +1,7 @@
 ﻿using LagEnvironmentApplication.Interfaces;
 using LagEnvironmentApplication.Services;
 using LagEnvironmentApplication.Services.Domains;
+using LagEnvironmentApplication.Stores;
 using LagQueueAnalysisInfra.EFContexts;
 using LagQueueAnalysisInfra.Factories;
 using LagQueueAnalysisInfra.Interfaces;
@@ -35,7 +36,6 @@ namespace LagQueueAnalysisAPI.Configurations
 
             // Services Domain Environment
             services.AddScoped<IEnvironmentService, EnvironmentService>();
-            services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IAuthenticationService, AuthenticationService>();
 
             // Services Rabbit
@@ -49,6 +49,9 @@ namespace LagQueueAnalysisAPI.Configurations
             // Factories
             services.AddScoped<ILagQueueContextFactory, LagQueueContextFactory>();
 
+            // Store
+            services.AddSingleton<ITokenStore, TokenStore>(); // Gerencia os tokens de Autenticação
+
             // Outros
             services.AddHttpContextAccessor();
         }
@@ -61,10 +64,17 @@ namespace LagQueueAnalysisAPI.Configurations
             services.AddScoped<LagQueueContext>(provider =>
             {
                 var httpContextAcessor = provider.GetRequiredService<IHttpContextAccessor>();
-                var token = httpContextAcessor.HttpContext?.Request.Headers.Authorization.ToString() ?? throw new Exception("Não foi possivel buscar o token");
+                var contextFactory = provider.GetRequiredService<ILagQueueContextFactory>();
+                var tokenStore = provider.GetRequiredService<ITokenStore>();
 
-                var factory = provider.GetRequiredService<ILagQueueContextFactory>();
-                return factory.Create(token);
+
+                var authorization = httpContextAcessor.HttpContext?.Request.Headers.Authorization;
+                
+                var tokenKey = Guid.Parse(authorization.ToString() ?? throw new Exception("Token Authorization não informado"));
+
+                var environment = tokenStore.GetEnvironment(tokenKey);
+
+                return contextFactory.Create(environment);
             });
         }
 

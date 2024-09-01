@@ -4,6 +4,6 @@ namespace LagEnvironmentApplication.Interfaces
 {
     public interface IAuthenticationService
     {
-        Task<string> Authenticate(AuthenticateModel authenticate);
+        Task<Guid> Authenticate(AuthenticateModel authenticate);
     }
 }

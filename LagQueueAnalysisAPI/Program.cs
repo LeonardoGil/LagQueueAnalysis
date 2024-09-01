@@ -1,4 +1,6 @@
 using LagQueueAnalysisAPI.Configurations;
+using LagQueueAnalysisAPI.Middleware;
+using Microsoft.OpenApi.Models;
 
 namespace LagQueueAnalysisAPI
 {
@@ -11,9 +13,47 @@ namespace LagQueueAnalysisAPI
             // Add services to the container.
             builder.Services.AddControllers();
 
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAll", builder =>
+                {
+                    builder.AllowAnyOrigin()
+                           .AllowAnyMethod()
+                           .AllowAnyHeader();
+                });
+            });
+
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
+            builder.Services.AddSwaggerGen(options =>
+            {
+                options.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
+
+                var key = "BasicToken";
+
+                options.AddSecurityDefinition(key, new OpenApiSecurityScheme
+                {
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.ApiKey,
+                    In = ParameterLocation.Header,
+                    Description = "Token para autenticação"
+                });
+
+                options.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = key
+                            }
+                        },
+                        Array.Empty<string>()
+                    }
+                });
+            });
 
             builder.Services.AddServices();
             builder.Services.AddMappers();
@@ -27,6 +67,8 @@ namespace LagQueueAnalysisAPI
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
+
+            app.UseMiddleware<TokenAutheticationMiddleware>();
 
             app.UseHttpsRedirection();
             app.UseAuthorization();

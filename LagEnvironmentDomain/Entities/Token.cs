@@ -6,12 +6,18 @@ namespace LagEnvironmentDomain.Entities
     {
         public Guid Id { get; set; }
         
-        public string Key { get; set; }
-
         public DateTime Expiration { get; set; }
 
+        public AnalysisEnvironment AnalysisEnvironment { get; set; }
 
-        public Guid AnalysisEnvironmentId { get; set; }
-        public virtual AnalysisEnvironment AnalysisEnvironment { get; set; }
+        public static Token Create(AnalysisEnvironment environment)
+        {
+            return new Token
+            {
+                Id = Guid.NewGuid(),
+                Expiration = DateTime.UtcNow.AddHours(3),
+                AnalysisEnvironment = environment
+            };
+        }
     }
 }
