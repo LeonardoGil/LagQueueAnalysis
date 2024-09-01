@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Text;
 
-namespace LagQueueDomain.Settings
+namespace LagRabbitMQ.Settings
 {
-    public class RabbitMQSettings
+    public class RabbitMQSetting
     {
         public string Url { get; set; }
 
