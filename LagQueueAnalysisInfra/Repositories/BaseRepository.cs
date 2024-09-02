@@ -49,9 +49,12 @@ namespace LagQueueAnalysisInfra.Repositories
         }
 
 
-        public DbSet<T> Get<T>(Func<T, bool>? where = null) where T : class
+        public IQueryable<T> Get<T>(Func<T, bool>? where = null) where T : class
         {
-            return _dbContext.Set<T>();
+            if (where is not null)
+                return _dbContext.Set<T>().Where(where).AsQueryable();
+
+            return _dbContext.Set<T>().AsQueryable();
         }
     }
 }
