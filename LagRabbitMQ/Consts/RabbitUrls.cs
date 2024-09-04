@@ -2,8 +2,6 @@
 {
     public static class RabbitUrls
     {
-        public const string DefaultUrl = "http://localhost:15672/";
-
         public const string Overview = "/api/overview";
 
         public const string Queue = "api/queues/{0}/{1}";

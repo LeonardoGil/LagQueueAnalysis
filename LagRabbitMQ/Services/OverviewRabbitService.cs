@@ -14,7 +14,9 @@ namespace LagRabbitMQ.Services
 
             var url = new Uri(baseUrl, RabbitUrls.Overview);
 
-            await RequestServices.Get<object>(url, setting.Token());
+            var token = RequestServices.GetAuthToken(setting.Username, setting.Password);
+
+            await RequestServices.Get<object>(url, token);
         }
     }
 }

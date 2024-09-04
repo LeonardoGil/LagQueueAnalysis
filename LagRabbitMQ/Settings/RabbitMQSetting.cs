@@ -13,11 +13,7 @@ namespace LagRabbitMQ.Settings
 
         public string Token()
         {
-            var pass = $"{Username}:{Password}";
-
-            var token = Convert.ToBase64String(Encoding.ASCII.GetBytes(pass));
-
-            return $"Basic {token}";
+            return Convert.ToBase64String(Encoding.ASCII.GetBytes($"{Username}:{Password}"));
         }
     }
 }
