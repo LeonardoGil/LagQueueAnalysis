@@ -24,8 +24,7 @@ namespace LagEnvironmentApplication.Services
 
         public async Task<Guid> Authenticate(AuthenticateModel authenticate)
         {
-            if (await ValidateConnectionWithRabbitMQ(authenticate))
-                throw new Exception("Conexão com RabbitMQ Inválida");
+            var rabbitMQSetting = await ValidateConnectionWithRabbitMQ(authenticate);
 
             var generateEnvironment = new GenerateEnvironmentModel
             {
@@ -35,19 +34,28 @@ namespace LagEnvironmentApplication.Services
 
             var environment = await _environmentService.ToGenerate(generateEnvironment);
 
+            environment.RabbitMQSetting = rabbitMQSetting;
+
+            var token = await ValidateToken(environment);
+
+            return token.Id;
+        }
+
+        private async Task<Token> ValidateToken(AnalysisEnvironment environment)
+        {
             var token = _tokenStore.GetValidTokenByEnvironmentId(environment.Id);
 
             if (token is null)
             {
                 token = Token.Create(environment);
-                
+
                 _tokenStore.SetToken(token.Id, token);
             }
 
-            return token.Id;
+            return await Task.FromResult(token);
         }
 
-        private async Task<bool> ValidateConnectionWithRabbitMQ(AuthenticateModel authenticate)
+        private async Task<RabbitMQSetting> ValidateConnectionWithRabbitMQ(AuthenticateModel authenticate)
         {
             var rabbitMQSetting = new RabbitMQSetting
             {
@@ -60,11 +68,11 @@ namespace LagEnvironmentApplication.Services
             {
                 await _overviewService.OverviewRequest(rabbitMQSetting);
 
-                return true;
+                return rabbitMQSetting;
             }
             catch (Exception)
             {
-                return false;                
+                throw new Exception("Conexão com RabbitMQ Inválida");
             }
         }
     }

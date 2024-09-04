@@ -1,4 +1,6 @@
-﻿using System;
+﻿using LagRabbitMQ.Settings;
+using System;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace LagEnvironmentDomain.Entities
 {
@@ -11,5 +13,8 @@ namespace LagEnvironmentDomain.Entities
         public string Url { get; set; }
 
         public string Database { get; set; }
+
+        [NotMapped]
+        public RabbitMQSetting RabbitMQSetting { get; set; }
     }
 }
