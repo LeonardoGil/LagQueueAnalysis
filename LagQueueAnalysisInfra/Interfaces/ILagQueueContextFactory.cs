@@ -5,7 +5,6 @@ namespace LagQueueAnalysisInfra.Interfaces
 {
     public interface ILagQueueContextFactory
     {
-        LagQueueContext Create(AnalysisEnvironment environment);
-
+        LagQueueContext Create(AnalysisEnvironment environment, string connectionString);
     }
 }

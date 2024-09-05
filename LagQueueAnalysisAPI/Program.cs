@@ -55,9 +55,7 @@ namespace LagQueueAnalysisAPI
                 });
             });
 
-            builder.Services.AddServices();
-            builder.Services.AddMappers();
-            builder.Services.AddDbContext(builder.Configuration);
+            builder.Services.Inject(builder.Configuration);
 
             var app = builder.Build();
 

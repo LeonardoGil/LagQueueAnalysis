@@ -3,6 +3,7 @@ using LagEnvironmentApplication.Models;
 using LagEnvironmentDomain.Entities;
 using LagQueueAnalysisInfra.EFContexts;
 using LagQueueAnalysisInfra.Interfaces;
+using Microsoft.Extensions.Configuration;
 
 namespace LagEnvironmentApplication.Services.Domains
 {
@@ -10,12 +11,15 @@ namespace LagEnvironmentApplication.Services.Domains
     {
         private readonly IBaseRepository<LagEnvironmentContext> _baseRepository;
         private readonly ILagQueueContextFactory _lagQueueContextFactory;
+        private readonly IConfiguration _configuration;
 
-        public EnvironmentService(IBaseRepository<LagEnvironmentContext> baseRepository, 
-                                  ILagQueueContextFactory lagQueueContextFactory)
+        public EnvironmentService(IBaseRepository<LagEnvironmentContext> baseRepository,
+                                  ILagQueueContextFactory lagQueueContextFactory,
+                                  IConfiguration configuration)
         {
             _baseRepository = baseRepository;
             _lagQueueContextFactory = lagQueueContextFactory;
+            _configuration = configuration;
         }
 
         public async Task<AnalysisEnvironment> ToGenerate(GenerateEnvironmentModel generateEnvironment)
@@ -34,7 +38,9 @@ namespace LagEnvironmentApplication.Services.Domains
                 _baseRepository.Add(environment);
                 _baseRepository.SaveChanges();
 
-                var context = _lagQueueContextFactory.Create(environment);
+                var environmentConnectionString = _configuration.GetConnectionString("LagEnvironmentDB");
+
+                var context = _lagQueueContextFactory.Create(environment, environmentConnectionString);
                 context.Database.EnsureCreated();
             }
 

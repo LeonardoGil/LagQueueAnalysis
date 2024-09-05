@@ -1,4 +1,4 @@
-﻿using LagQueueApplication.Services;
+﻿using LagQueueAnalysisResolver.Services;
 
 namespace LagQueueApplication.Interfaces
 {
