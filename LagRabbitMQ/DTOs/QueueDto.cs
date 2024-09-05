@@ -6,8 +6,8 @@
         public object arguments { get; set; }
         
         public bool auto_delete { get; set; }
-        public int consumer_capacity { get; set; }
-        public int consumer_utilisation { get; set; }
+        public string consumer_capacity { get; set; }
+        public string consumer_utilisation { get; set; }
         public int consumers { get; set; }
         public bool durable { get; set; }
 
