@@ -10,17 +10,17 @@ namespace LagQueueApplication.Processings
     public class RegisterQueueMessagesProcessingEvent : IRegisterQueueMessagesProcessingEvent
     {
         private readonly IMapper _mapper;
-        private readonly IQueueRabbitServices _queueRabbitServices;
+        private readonly IQueueRabbitService _queueRabbitService;
         private readonly IMessageService _messageService;
         private readonly IQueueRepository _queueRepository;
 
         public RegisterQueueMessagesProcessingEvent(IMapper mapper, 
-                                                    IQueueRabbitServices queueRabbitServices, 
+                                                    IQueueRabbitService queueRabbitService, 
                                                     IMessageService messageService, 
                                                     IQueueRepository queueRepository)
         {
             _mapper = mapper;
-            _queueRabbitServices = queueRabbitServices;
+            _queueRabbitService = queueRabbitService;
             _messageService = messageService;
             _queueRepository = queueRepository;
         }
@@ -29,7 +29,7 @@ namespace LagQueueApplication.Processings
         {
             try
             {
-                var queueDto = await _queueRabbitServices.QueueRequest(command.VHost, command.Queue);
+                var queueDto = await _queueRabbitService.QueueRequest(command.VHost, command.Queue);
 
                 if (queueDto.messages == 0)
                 {
@@ -61,7 +61,7 @@ namespace LagQueueApplication.Processings
         private async Task<List<Message>> BatchMessagesRequest(string vhost, string name, int take)
         {
             //TODO: Adicionar parametro Take
-            var messagesDto = await _queueRabbitServices.QueueMessagesGetRequest(vhost, name, take);
+            var messagesDto = await _queueRabbitService.QueueMessagesGetRequest(vhost, name, take);
 
             return _mapper.Map<List<Message>>(messagesDto);
         }

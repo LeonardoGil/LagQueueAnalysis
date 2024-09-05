@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace LagRabbitMQ.Interfaces
 {
-    public interface IQueueRabbitServices
+    public interface IQueueRabbitService
     {
         Task<List<QueueDto>> QueueListRequest();
 

@@ -4,7 +4,7 @@ using LagQueueDomain.Entities;
 
 namespace LagQueueAnalysisInfra.Repositories
 {
-    public class QueueRepository : BaseRepository, IQueueRepository
+    public class QueueRepository : BaseRepository<LagQueueContext>, IQueueRepository
     {
         public QueueRepository(LagQueueContext dbContext) : base(dbContext)
         {

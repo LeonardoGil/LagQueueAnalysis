@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace LagQueueAnalysisInfra.Interfaces
 {
-    public interface IBaseRepository
+    public interface IBaseRepository<Context> where Context : DbContext
     {
-        LagQueueContext DbContext { get; }
+        Context DbContext { get; }
 
         void Add<T>(T entity);
         void AddRange<T>(IList<T> entities) where T : class;
@@ -14,6 +14,6 @@ namespace LagQueueAnalysisInfra.Interfaces
         bool IsTracking<T>(T entity) where T : class;
         void SaveChanges();
 
-        DbSet<T> Get<T>(Func<T, bool>? where = null) where T : class;
+        IQueryable<T> Get<T>(Func<T, bool>? where = null) where T : class;
     }
 }

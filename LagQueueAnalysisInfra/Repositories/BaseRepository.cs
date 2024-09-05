@@ -4,13 +4,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace LagQueueAnalysisInfra.Repositories
 {
-    public class BaseRepository : IBaseRepository
+    public class BaseRepository<Context> : IBaseRepository<Context> where Context : DbContext
     {
-        public LagQueueContext DbContext => _dbContext;
+        public Context DbContext => _dbContext;
 
-        public readonly LagQueueContext _dbContext;
+        public readonly Context _dbContext;
 
-        public BaseRepository(LagQueueContext dbContext)
+        public BaseRepository(Context dbContext)
         {
             _dbContext = dbContext;
         }
@@ -49,9 +49,12 @@ namespace LagQueueAnalysisInfra.Repositories
         }
 
 
-        public DbSet<T> Get<T>(Func<T, bool>? where = null) where T : class
+        public IQueryable<T> Get<T>(Func<T, bool>? where = null) where T : class
         {
-            return _dbContext.Set<T>();
+            if (where is not null)
+                return _dbContext.Set<T>().Where(where).AsQueryable();
+
+            return _dbContext.Set<T>().AsQueryable();
         }
     }
 }

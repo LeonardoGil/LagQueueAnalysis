@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Text;
 
-namespace LagQueueDomain.Settings
+namespace LagRabbitMQ.Settings
 {
-    public class RabbitMQSettings
+    public class RabbitMQSetting
     {
         public string Url { get; set; }
 
@@ -13,11 +13,7 @@ namespace LagQueueDomain.Settings
 
         public string Token()
         {
-            var pass = $"{Username}:{Password}";
-
-            var token = Convert.ToBase64String(Encoding.ASCII.GetBytes(pass));
-
-            return $"Basic {token}";
+            return Convert.ToBase64String(Encoding.ASCII.GetBytes($"{Username}:{Password}"));
         }
     }
 }

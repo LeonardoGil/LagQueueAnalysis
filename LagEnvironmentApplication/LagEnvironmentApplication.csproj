@@ -7,7 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Domain\" />
+    <ProjectReference Include="..\LagQueueAnalysisInfra\LagQueueAnalysisInfra.csproj" />
+    <ProjectReference Include="..\LagRabbitMQ\LagRabbitMQ.csproj" />
   </ItemGroup>
 
 </Project>
