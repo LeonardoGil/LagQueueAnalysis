@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace LagRabbitMQ.Services
 {
-    public static class RequestServices
+    public static class RequestService
     {
         public static HttpClient HttpCliente = new HttpClient();
 

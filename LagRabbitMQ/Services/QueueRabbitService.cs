@@ -23,7 +23,7 @@ namespace LagRabbitMQ.Services
 
             var url = new Uri(baseUrl, RabbitUrls.QueueList);
 
-            return await RequestServices.Get<List<QueueDto>>(url, _setting.Token());
+            return await RequestService.Get<List<QueueDto>>(url, _setting.Token());
         }
 
         public async Task<List<MessageDto>> QueueMessagesGetRequest(string vHost, string queue, int take = 500)
@@ -41,7 +41,7 @@ namespace LagRabbitMQ.Services
                 count = take
             };
 
-            return await RequestServices.Post<List<MessageDto>>(url, _setting.Token(), body);
+            return await RequestService.Post<List<MessageDto>>(url, _setting.Token(), body);
         }
 
         public async Task<QueueDto> QueueRequest(string vHost, string queue)
@@ -52,7 +52,7 @@ namespace LagRabbitMQ.Services
 
             var url = new Uri(baseUrl, endpoint);
 
-            return await RequestServices.Get<QueueDto>(url, _setting.Token());
+            return await RequestService.Get<QueueDto>(url, _setting.Token());
         }
 
         private string GetHost(string host)

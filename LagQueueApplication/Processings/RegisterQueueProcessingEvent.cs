@@ -9,13 +9,13 @@ namespace LagQueueApplication.Processings
     public class RegisterQueueProcessingEvent : IRegisterQueueProcessingEvent
     {
         private readonly IMapper _mapper;
-        private readonly IQueueRabbitService _queueRabbitServices;
+        private readonly IQueueRabbitService _queueRabbitService;
         private readonly IQueueService _queueService;
 
-        public RegisterQueueProcessingEvent(IMapper mapper, IQueueRabbitService queueRabbitServices, IQueueService queueService)
+        public RegisterQueueProcessingEvent(IMapper mapper, IQueueRabbitService queueRabbitService, IQueueService queueService)
         {
             _mapper = mapper;
-            _queueRabbitServices = queueRabbitServices;
+            _queueRabbitService = queueRabbitService;
             _queueService = queueService;
         }
 
@@ -23,7 +23,7 @@ namespace LagQueueApplication.Processings
         {
             try
             {
-                var queueDtoList = await _queueRabbitServices.QueueListRequest();
+                var queueDtoList = await _queueRabbitService.QueueListRequest();
 
                 var queues = _mapper.Map<List<Queue>>(queueDtoList);
 
