@@ -32,29 +32,27 @@ namespace LagEnvironmentApplication.Services.Domains
                 {
                     Description = generateEnvironment.Description,
                     Url = generateEnvironment.Url.Authority,
-                    Database = $"LagQueueAnalysis_{GetDomainName(generateEnvironment.Url.Host)}"
+                    Database = $"LagQueueAnalysis_{CleanHost(generateEnvironment.Url.Host)}"
                 };
 
                 _baseRepository.Add(environment);
                 _baseRepository.SaveChanges();
 
-                var environmentConnectionString = _configuration.GetConnectionString("LagEnvironmentDB");
+                var queueConnectionString = _configuration.GetConnectionString("LagQueueAnalysisDB");
 
-                var context = _lagQueueContextFactory.Create(environment, environmentConnectionString);
+                var context = _lagQueueContextFactory.Create(environment, string.Format(queueConnectionString, environment.Database));
                 context.Database.EnsureCreated();
             }
 
             return environment;
         }
 
-        private string GetDomainName(string host)
+        private string CleanHost(string host)
         {
-            var segments = host.Split('.');
-
-            if (segments.Length >= 2)
-                return segments[1];
-
-            return host;
+            return host.Replace(".com", string.Empty)
+                       .Replace(".br", string.Empty)
+                       .Replace(".", "_")
+                       .Replace("-", "_");
         }
     }
 }
