@@ -31,8 +31,6 @@ namespace LagQueueAnalysisAPI.Controllers
             }
         }
 
-
-
         [Route("Register")]
         [HttpPost]
         public async Task<IActionResult> Register()
@@ -40,22 +38,6 @@ namespace LagQueueAnalysisAPI.Controllers
             try
             {
                 var processingId = await _executeProcessingEventService.On<RegisterQueueEvent, IRegisterQueueProcessingEvent>(new RegisterQueueEvent());
-
-                return Ok(processingId);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-
-        [Route("Messages/Register")]
-        [HttpPost]
-        public async Task<IActionResult> MessageRegister([FromBody]RegisterQueueMessagesEvent request)
-        {
-            try
-            {
-                var processingId = await _executeProcessingEventService.On<RegisterQueueMessagesEvent, IRegisterQueueMessagesProcessingEvent>(request);
 
                 return Ok(processingId);
             }
