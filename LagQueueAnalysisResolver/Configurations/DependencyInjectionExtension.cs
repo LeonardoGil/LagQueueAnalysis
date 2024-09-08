@@ -11,6 +11,7 @@ using LagQueueAnalysisResolver.Services;
 using LagQueueApplication;
 using LagQueueApplication.Interfaces;
 using LagQueueApplication.Processings;
+using LagQueueApplication.Queries;
 using LagQueueApplication.Services.Domains;
 using LagRabbitMQ.Interfaces;
 using LagRabbitMQ.Services;
@@ -19,7 +20,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System;
 
 namespace LagQueueAnalysisResolver.Configurations
 {
@@ -52,7 +52,10 @@ namespace LagQueueAnalysisResolver.Configurations
             services.AddScoped<ILagQueueContextFactory, LagQueueContextFactory>();
 
             // Store
-            services.AddSingleton<ITokenStore, TokenStore>(); // Gerencia os tokens de Autenticação
+            services.AddSingleton<ITokenStore, TokenStore>();
+
+            // Queries
+            services.AddScoped<IQueueQuery, QueueQuery>();
         }
 
         public static void AddRabbitMQServices(this IServiceCollection services)

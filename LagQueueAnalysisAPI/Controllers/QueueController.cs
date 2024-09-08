@@ -8,11 +8,30 @@ namespace LagQueueAnalysisAPI.Controllers
     public class QueueController : Controller
     {
         private readonly IExecuteProcessingEventService _executeProcessingEventService;
+        private readonly IQueueQuery _queueQuery;
 
-        public QueueController(IExecuteProcessingEventService executeProcessingEventService)
+        public QueueController(IExecuteProcessingEventService executeProcessingEventService, 
+                               IQueueQuery queueQuery)
         {
             _executeProcessingEventService = executeProcessingEventService;
+            _queueQuery = queueQuery;
         }
+
+        [Route("List")]
+        [HttpGet]
+        public IActionResult List()
+        {
+            try
+            {
+                return Ok(_queueQuery.List());
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
 
         [Route("Register")]
         [HttpPost]
