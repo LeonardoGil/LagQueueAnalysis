@@ -14,8 +14,8 @@ namespace LagQueueApplication.Mappings
                 .ForMember(dest => dest.MessageId, opt => opt.MapFrom(src => src.properties.message_id))
                 .ForMember(dest => dest.Position, opt => opt.MapFrom(src => src.message_count))
                 .ForMember(dest => dest.Type, opt => opt.MapFrom(src => src.properties.type))
-                .ForMember(dest => dest.ProcessingStarted, opt => opt.MapFrom(src => src.properties.headers.NServiceBusProcessingStarted))
-                .ForMember(dest => dest.ProcessingEnded, opt => opt.MapFrom(src => src.properties.headers.NServiceBusProcessingEnded));
+                .ForMember(dest => dest.ProcessingStarted, opt => opt.MapFrom(src => DateTime.ParseExact(src.properties.headers.NServiceBusProcessingStarted, "yyyy-MM-dd HH:mm:ss:ffffff 'Z'", System.Globalization.CultureInfo.InvariantCulture)))
+                .ForMember(dest => dest.ProcessingEnded, opt => opt.MapFrom(src => DateTime.ParseExact(src.properties.headers.NServiceBusProcessingEnded, "yyyy-MM-dd HH:mm:ss:ffffff 'Z'", System.Globalization.CultureInfo.InvariantCulture)));
 
             CreateMap<Message, MessageQueryModel>()
                 .ForMember(dest => dest.MessageId, opt => opt.MapFrom(src => src.MessageId))
