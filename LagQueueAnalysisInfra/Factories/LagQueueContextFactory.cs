@@ -2,7 +2,6 @@
 using LagQueueAnalysisInfra.EFContexts;
 using LagQueueAnalysisInfra.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 
 namespace LagQueueAnalysisInfra.Factories
 {
@@ -14,9 +13,13 @@ namespace LagQueueAnalysisInfra.Factories
 
         public LagQueueContext Create(AnalysisEnvironment environment, string connectionString)
         {
-            var options = new DbContextOptionsBuilder<LagQueueContext>().UseSqlServer(connectionString).Options;
+            var options = new DbContextOptionsBuilder<LagQueueContext>().UseSqlServer(connectionString, x => x.MigrationsAssembly(nameof(LagQueueAnalysisInfra))).Options;
 
-            return new LagQueueContext(options);
+            var context = new LagQueueContext(options);
+            
+            context.Database.Migrate();
+
+            return context;
         }
     }
 }
