@@ -56,6 +56,7 @@ namespace LagQueueAnalysisResolver.Configurations
 
             // Queries
             services.AddScoped<IQueueQuery, QueueQuery>();
+            services.AddScoped<IMessageQuery, MessageQuery>();
         }
 
         public static void AddRabbitMQServices(this IServiceCollection services)
