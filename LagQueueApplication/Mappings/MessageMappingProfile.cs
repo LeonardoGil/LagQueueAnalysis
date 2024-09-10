@@ -13,7 +13,9 @@ namespace LagQueueApplication.Mappings
                 .ForMember(dest => dest.Expiration, opt => opt.MapFrom(src => src.properties.expiration))
                 .ForMember(dest => dest.MessageId, opt => opt.MapFrom(src => src.properties.message_id))
                 .ForMember(dest => dest.Position, opt => opt.MapFrom(src => src.message_count))
-                .ForMember(dest => dest.Type, opt => opt.MapFrom(src => src.properties.type));
+                .ForMember(dest => dest.Type, opt => opt.MapFrom(src => src.properties.type))
+                .ForMember(dest => dest.ProcessingStarted, opt => opt.MapFrom(src => src.properties.headers.NServiceBusProcessingStarted))
+                .ForMember(dest => dest.ProcessingEnded, opt => opt.MapFrom(src => src.properties.headers.NServiceBusProcessingEnded));
 
             CreateMap<Message, MessageQueryModel>()
                 .ForMember(dest => dest.MessageId, opt => opt.MapFrom(src => src.MessageId))
