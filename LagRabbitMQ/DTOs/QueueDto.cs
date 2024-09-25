@@ -35,7 +35,7 @@
         public int messages_unacknowledged_ram { get; set; }
         public string name { get; set; }
         public string node { get; set; }
-        public int reductions { get; set; }
+        public long reductions { get; set; }
         public Reductions_Details reductions_details { get; set; }
         public string state { get; set; }
         public int storage_version { get; set; }
