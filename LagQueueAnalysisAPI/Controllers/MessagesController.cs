@@ -1,29 +1,31 @@
-﻿using LagQueueApplication.Interfaces;
+﻿using LagQueueApplication.Filters;
+using LagQueueApplication.Interfaces;
 using LagQueueApplication.Processings.Events;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LagQueueAnalysisAPI.Controllers
 {
-    [Route("Queue")]
-    public class QueueController : Controller
+    [Route("Messages")]
+    public class MessagesController : Controller
     {
         private readonly IExecuteProcessingEventService _executeProcessingEventService;
-        private readonly IQueueQuery _queueQuery;
+        private readonly IMessageQuery _messageQuery;
 
-        public QueueController(IExecuteProcessingEventService executeProcessingEventService, 
-                               IQueueQuery queueQuery)
+        public MessagesController(IExecuteProcessingEventService executeProcessingEventService, 
+                                  IMessageQuery messageQuery)
         {
             _executeProcessingEventService = executeProcessingEventService;
-            _queueQuery = queueQuery;
+            _messageQuery = messageQuery;
         }
+
 
         [Route("List")]
         [HttpGet]
-        public IActionResult List()
+        public IActionResult List([FromQuery] MessageListFilter filter)
         {
             try
             {
-                return Ok(_queueQuery.List());
+                return Ok(_messageQuery.List(filter));
             }
             catch (Exception ex)
             {
@@ -33,11 +35,11 @@ namespace LagQueueAnalysisAPI.Controllers
 
         [Route("Register")]
         [HttpPost]
-        public async Task<IActionResult> Register()
+        public async Task<IActionResult> MessageRegister([FromBody]RegisterQueueMessagesEvent request)
         {
             try
             {
-                var processingId = await _executeProcessingEventService.On<RegisterQueueEvent, IRegisterQueueProcessingEvent>(new RegisterQueueEvent());
+                var processingId = await _executeProcessingEventService.On<RegisterQueueMessagesEvent, IRegisterQueueMessagesProcessingEvent>(request);
 
                 return Ok(processingId);
             }
