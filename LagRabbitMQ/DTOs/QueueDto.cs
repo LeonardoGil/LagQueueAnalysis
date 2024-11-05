@@ -16,12 +16,12 @@
 
         public bool exclusive { get; set; }
         public int memory { get; set; }
-        public int message_bytes { get; set; }
-        public int message_bytes_paged_out { get; set; }
-        public int message_bytes_persistent { get; set; }
-        public int message_bytes_ram { get; set; }
-        public int message_bytes_ready { get; set; }
-        public int message_bytes_unacknowledged { get; set; }
+        public long? message_bytes { get; set; }
+        public long? message_bytes_paged_out { get; set; }
+        public long? message_bytes_persistent { get; set; }
+        public long? message_bytes_ram { get; set; }
+        public long? message_bytes_ready { get; set; }
+        public long? message_bytes_unacknowledged { get; set; }
         public int messages { get; set; }
         public Messages_Details messages_details { get; set; }
         public int messages_paged_out { get; set; }
