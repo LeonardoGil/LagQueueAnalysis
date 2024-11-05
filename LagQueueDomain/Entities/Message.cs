@@ -25,5 +25,7 @@ namespace LagQueueDomain.Entities
         public DateTime ProcessingStarted { get; set; }
 
         public DateTime ProcessingEnded { get; set; }
+
+        public DateTime TimeSent { get; set; }
     }
 }

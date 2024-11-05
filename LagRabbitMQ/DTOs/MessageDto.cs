@@ -55,6 +55,8 @@ namespace LagRabbitMQ.DTOs
         [JsonProperty("NServiceBus.ProcessingStarted")]
         public string NServiceBusProcessingStarted { get; set; }
         public string NServiceBusReplyToAddress { get; set; }
+
+        [JsonProperty("NServiceBus.TimeSent")]
         public string NServiceBusTimeSent { get; set; }
         public string NServiceBusTransportRabbitMQConfirmationId { get; set; }
         public string NServiceBusVersion { get; set; }
