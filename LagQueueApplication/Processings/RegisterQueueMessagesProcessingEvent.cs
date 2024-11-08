@@ -7,29 +7,17 @@ using LagRabbitMQ.Interfaces;
 
 namespace LagQueueApplication.Processings
 {
-    public class RegisterQueueMessagesProcessingEvent : IRegisterQueueMessagesProcessingEvent
+    public class RegisterQueueMessagesProcessingEvent(IMapper mapper,
+                                                      IQueueRabbitService queueRabbitService,
+                                                      IMessageService messageService,
+                                                      IQueueRepository queueRepository) : IRegisterQueueMessagesProcessingEvent 
     {
-        private readonly IMapper _mapper;
-        private readonly IQueueRabbitService _queueRabbitService;
-        private readonly IMessageService _messageService;
-        private readonly IQueueRepository _queueRepository;
-
-        public RegisterQueueMessagesProcessingEvent(IMapper mapper,
-                                                    IQueueRabbitService queueRabbitService,
-                                                    IMessageService messageService,
-                                                    IQueueRepository queueRepository)
-        {
-            _mapper = mapper;
-            _queueRabbitService = queueRabbitService;
-            _messageService = messageService;
-            _queueRepository = queueRepository;
-        }
-
+        
         public async Task Run(RegisterQueueMessagesEvent command)
         {
             try
             {
-                var queueDto = await _queueRabbitService.QueueRequest(command.VHost, command.Queue);
+                var queueDto = await queueRabbitService.QueueRequest(command.VHost, command.Queue);
 
                 if (queueDto.messages == 0)
                 {
@@ -37,7 +25,7 @@ namespace LagQueueApplication.Processings
                     return;
                 }
 
-                var queue = _queueRepository.GetByName(command.Queue) ?? throw new Exception($"Fila '{command.Queue}' não encontrada");
+                var queue = queueRepository.GetByName(command.Queue) ?? throw new Exception($"Fila '{command.Queue}' não encontrada");
 
 
                 // TODO: Estudar forma de consulta as mensagens em lote no Rabbitmq
@@ -45,7 +33,7 @@ namespace LagQueueApplication.Processings
 
                 messages.ForEach(m => m.QueueId = queue.Id);
 
-                _messageService.Register(messages);
+                messageService.Register(messages);
             }
             catch (Exception ex)
             {
@@ -56,9 +44,9 @@ namespace LagQueueApplication.Processings
 
         private async Task<List<Message>> BatchMessagesRequest(string vhost, string name, int take)
         {
-            var messagesDto = await _queueRabbitService.QueueMessagesGetRequest(vhost, name, take);
+            var messagesDto = await queueRabbitService.QueueMessagesGetRequest(vhost, name, take);
 
-            return _mapper.Map<List<Message>>(messagesDto);
+            return mapper.Map<List<Message>>(messagesDto);
         }
     }
 }

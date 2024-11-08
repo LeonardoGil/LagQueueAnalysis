@@ -6,28 +6,17 @@ using LagRabbitMQ.Interfaces;
 
 namespace LagQueueApplication.Processings
 {
-    public class RegisterQueueProcessingEvent : IRegisterQueueProcessingEvent
+    public class RegisterQueueProcessingEvent(IMapper mapper, IQueueRabbitService queueRabbitService, IQueueService queueService) : IRegisterQueueProcessingEvent
     {
-        private readonly IMapper _mapper;
-        private readonly IQueueRabbitService _queueRabbitService;
-        private readonly IQueueService _queueService;
-
-        public RegisterQueueProcessingEvent(IMapper mapper, IQueueRabbitService queueRabbitService, IQueueService queueService)
-        {
-            _mapper = mapper;
-            _queueRabbitService = queueRabbitService;
-            _queueService = queueService;
-        }
-
         public async Task Run(RegisterQueueEvent command)
         {
             try
             {
-                var queueDtoList = await _queueRabbitService.QueueListRequest();
+                var queueDtoList = await queueRabbitService.QueueListRequest();
 
-                var queues = _mapper.Map<List<Queue>>(queueDtoList);
+                var queues = mapper.Map<List<Queue>>(queueDtoList);
 
-                _queueService.Register(queues);
+                queueService.Register(queues);
             }
             catch (Exception ex)
             {
