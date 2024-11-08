@@ -3,7 +3,7 @@
 namespace LagRabbitMQ.DTOs
 {
     public class MessageDto
-    { 
+    {
         public int payload_bytes { get; set; }
         public bool redelivered { get; set; }
         public string exchange { get; set; }
@@ -47,6 +47,26 @@ namespace LagRabbitMQ.DTOs
         public string NServiceBusOriginatingEndpoint { get; set; }
         public string NServiceBusOriginatingMachine { get; set; }
 
+        #region Exception 
+        [JsonProperty("NServiceBus.ExceptionInfo.Data.Handler failure time")]
+        public string NServiceBusExceptionInfoDataHandlerFailureTime { get; set; }
+        public string NServiceBusExceptionInfoDataHandlerStartTime { get; set; }
+        public string NServiceBusExceptionInfoDataHandlerType { get; set; }
+        public string NServiceBusExceptionInfoDataMessageID { get; set; }
+        public string NServiceBusExceptionInfoDataMessageType { get; set; }
+
+        [JsonProperty("NServiceBus.ExceptionInfo.ExceptionType")]
+        public string NServiceBusExceptionInfoExceptionType { get; set; }
+        public string NServiceBusExceptionInfoHelpLink { get; set; }
+
+        [JsonProperty("NServiceBus.ExceptionInfo.Message")] 
+        public string NServiceBusExceptionInfoMessage { get; set;    }
+        public string NServiceBusExceptionInfoSource { get; set; }
+
+        [JsonProperty("NServiceBus.ExceptionInfo.StackTrace")] 
+        public string NServiceBusExceptionInfoStackTrace { get; set; }
+        #endregion
+
         [JsonProperty("NServiceBus.ProcessingEnded")]
         public string NServiceBusProcessingEnded { get; set; }
         public string NServiceBusProcessingEndpoint { get; set; }
@@ -60,7 +80,7 @@ namespace LagRabbitMQ.DTOs
         public string NServiceBusTimeSent { get; set; }
         public string NServiceBusTransportRabbitMQConfirmationId { get; set; }
         public string NServiceBusVersion { get; set; }
-        
+
         public string TraceId { get; set; }
         public string NServiceBusRelatedTo { get; set; }
         public string Tenant { get; set; }
