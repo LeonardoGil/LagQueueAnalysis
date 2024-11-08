@@ -22,6 +22,11 @@ namespace LagQueueDomain.Entities
         public Guid? ReplyToId { get; set; }
         public virtual Queue ReplyTo { get; set; }
 
+
+        public Guid? ExceptionId { get; set; }
+        public virtual ExceptionMessage Exception { get; set; }
+
+
         public DateTime ProcessingStarted { get; set; }
 
         public DateTime ProcessingEnded { get; set; }

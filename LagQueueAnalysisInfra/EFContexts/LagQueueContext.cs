@@ -16,6 +16,8 @@ namespace LagQueueAnalysisInfra.EFContexts
 
         public DbSet<ProcessingEvent> ProcessingEvents { get; set; }
 
+        public DbSet<ExceptionMessage> Exceptions { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
