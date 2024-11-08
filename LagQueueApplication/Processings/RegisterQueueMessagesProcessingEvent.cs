@@ -14,9 +14,9 @@ namespace LagQueueApplication.Processings
         private readonly IMessageService _messageService;
         private readonly IQueueRepository _queueRepository;
 
-        public RegisterQueueMessagesProcessingEvent(IMapper mapper, 
-                                                    IQueueRabbitService queueRabbitService, 
-                                                    IMessageService messageService, 
+        public RegisterQueueMessagesProcessingEvent(IMapper mapper,
+                                                    IQueueRabbitService queueRabbitService,
+                                                    IMessageService messageService,
                                                     IQueueRepository queueRepository)
         {
             _mapper = mapper;
@@ -38,18 +38,14 @@ namespace LagQueueApplication.Processings
                 }
 
                 var queue = _queueRepository.GetByName(command.Queue) ?? throw new Exception($"Fila '{command.Queue}' não encontrada");
-                
-                var take = 2000;
-                var batch = (queueDto.messages / take) + 1;
 
-                for (int i = 0; i < batch; i++)
-                {
-                    var messages = await BatchMessagesRequest(queueDto.vhost, queueDto.name, take);
 
-                    messages.ForEach(m => m.QueueId = queue.Id);
+                // TODO: Estudar forma de consulta as mensagens em lote no Rabbitmq
+                var messages = await BatchMessagesRequest(queueDto.vhost, queueDto.name, 20000);
 
-                    _messageService.Register(messages);
-                }
+                messages.ForEach(m => m.QueueId = queue.Id);
+
+                _messageService.Register(messages);
             }
             catch (Exception ex)
             {
@@ -60,7 +56,6 @@ namespace LagQueueApplication.Processings
 
         private async Task<List<Message>> BatchMessagesRequest(string vhost, string name, int take)
         {
-            //TODO: Adicionar parametro Take
             var messagesDto = await _queueRabbitService.QueueMessagesGetRequest(vhost, name, take);
 
             return _mapper.Map<List<Message>>(messagesDto);
