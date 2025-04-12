@@ -8,7 +8,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\LagQueueAnalysisInfra\LagQueueAnalysisInfra.csproj" />
-    <ProjectReference Include="..\LagRabbitMQ\LagRabbitMQ.csproj" />
   </ItemGroup>
 
 </Project>

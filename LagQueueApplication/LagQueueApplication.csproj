@@ -16,7 +16,6 @@
     <ProjectReference Include="..\LagEnvironmentApplication\LagEnvironmentApplication.csproj" />
     <ProjectReference Include="..\LagQueueAnalysisInfra\LagQueueAnalysisInfra.csproj" />
     <ProjectReference Include="..\LagQueueDomain\LagQueueDomain.csproj" />
-    <ProjectReference Include="..\LagRabbitMQ\LagRabbitMQ.csproj" />
   </ItemGroup>
 
 </Project>
