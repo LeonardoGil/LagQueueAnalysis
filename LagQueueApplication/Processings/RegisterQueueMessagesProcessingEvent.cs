@@ -3,23 +3,23 @@ using LagQueueAnalysisInfra.Interfaces;
 using LagQueueApplication.Interfaces;
 using LagQueueApplication.Processings.Events;
 using LagQueueDomain.Entities;
-using LagRabbitMQ.Interfaces;
+using LagRabbitMq = LagRabbitMqManagerToolkit.Services.Interfaces;
 
 namespace LagQueueApplication.Processings
 {
     public class RegisterQueueMessagesProcessingEvent(IMapper mapper,
-                                                      IQueueRabbitService queueRabbitService,
+                                                      LagRabbitMq.IQueueService queueRabbitService,
                                                       IMessageService messageService,
-                                                      IQueueRepository queueRepository) : IRegisterQueueMessagesProcessingEvent 
+                                                      IQueueRepository queueRepository) : IRegisterQueueMessagesProcessingEvent
     {
-        
+
         public async Task Run(RegisterQueueMessagesEvent command)
         {
             try
             {
-                var queueDto = await queueRabbitService.QueueRequest(command.VHost, command.Queue);
+                var queueDto = await queueRabbitService.GetAsync(command.VHost, command.Queue);
 
-                if (queueDto.messages == 0)
+                if (queueDto.Messages == 0)
                 {
                     // TODO: Log
                     return;
@@ -29,7 +29,7 @@ namespace LagQueueApplication.Processings
 
 
                 // TODO: Estudar forma de consulta as mensagens em lote no Rabbitmq
-                var messages = await BatchMessagesRequest(queueDto.vhost, queueDto.name, 20000);
+                var messages = await BatchMessagesRequest(queueDto.Vhost, queueDto.Name, 20000);
 
                 messages.ForEach(m => m.QueueId = queue.Id);
 
@@ -44,7 +44,7 @@ namespace LagQueueApplication.Processings
 
         private async Task<List<Message>> BatchMessagesRequest(string vhost, string name, int take)
         {
-            var messagesDto = await queueRabbitService.QueueMessagesGetRequest(vhost, name, take);
+            var messagesDto = await queueRabbitService.GetMessagesAsync(vhost, name, take);
 
             return mapper.Map<List<Message>>(messagesDto);
         }

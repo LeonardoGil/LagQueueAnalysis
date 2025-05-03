@@ -2,17 +2,17 @@
 using LagQueueApplication.Interfaces;
 using LagQueueApplication.Processings.Events;
 using LagQueueDomain.Entities;
-using LagRabbitMQ.Interfaces;
+using LagRabbitMq = LagRabbitMqManagerToolkit.Services.Interfaces;
 
 namespace LagQueueApplication.Processings
 {
-    public class RegisterQueueProcessingEvent(IMapper mapper, IQueueRabbitService queueRabbitService, IQueueService queueService) : IRegisterQueueProcessingEvent
+    public class RegisterQueueProcessingEvent(IMapper mapper, LagRabbitMq.IQueueService queueRabbitService, IQueueService queueService) : IRegisterQueueProcessingEvent
     {
         public async Task Run(RegisterQueueEvent command)
         {
             try
             {
-                var queueDtoList = await queueRabbitService.QueueListRequest();
+                var queueDtoList = await queueRabbitService.ListAsync();
 
                 var queues = mapper.Map<List<Queue>>(queueDtoList);
 

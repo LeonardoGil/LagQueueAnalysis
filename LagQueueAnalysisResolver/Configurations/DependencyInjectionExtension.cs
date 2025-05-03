@@ -13,9 +13,8 @@ using LagQueueApplication.Interfaces;
 using LagQueueApplication.Processings;
 using LagQueueApplication.Queries;
 using LagQueueApplication.Services.Domains;
-using LagRabbitMQ.Interfaces;
-using LagRabbitMQ.Services;
-using LagRabbitMQ.Settings;
+using LagRabbitMqManagerToolkit.Domains;
+using LagRabbitMqManagerToolkit.Extensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -62,13 +61,9 @@ namespace LagQueueAnalysisResolver.Configurations
 
         public static void AddRabbitMQServices(this IServiceCollection services)
         {
-            // Services Rabbit
-            services.AddScoped<IQueueRabbitService, QueueRabbitService>();
-            services.AddScoped<IOverviewRabbitService, OverviewRabbitService>();
-
-            services.AddScoped<RabbitMQSetting>(provider =>
+            services.AddScoped<RabbitSettings?>(provider =>
             {
-                IHttpContextAccessor httpContextAcessor = default;
+                IHttpContextAccessor? httpContextAcessor = default;
 
                 try
                 {
@@ -89,14 +84,18 @@ namespace LagQueueAnalysisResolver.Configurations
 
                     var tokenKey = Guid.Parse(authorization.ToString() ?? throw new Exception("Token Authorization não informado"));
 
-                    return tokenStore.GetEnvironment(tokenKey)?.RabbitMQSetting ?? throw new Exception("RabbitMQ Setting não encontrado");
+                    return tokenStore.GetEnvironment(tokenKey)?.RabbitSettings ?? throw new Exception("RabbitMQ Setting não encontrado");
                 }
 
                 var tokenAcessor = provider.GetRequiredService<TokenAcessor>();
 
                 if (tokenAcessor is not null)
                 {
-                    return tokenAcessor.AnalysisEnvironment.RabbitMQSetting;
+                    var rabbitSettings = tokenAcessor.AnalysisEnvironment.RabbitSettings;
+
+                    services.AddLagRabbitMqManagerToolkit(rabbitSettings);
+
+                    return rabbitSettings;
                 }
 
                 return null;
@@ -121,11 +120,11 @@ namespace LagQueueAnalysisResolver.Configurations
 
         public static void AddLagQueueContext(this IServiceCollection services, string connectionString)
         {
-            services.AddScoped<LagQueueContext>(provider =>
+            services.AddScoped<LagQueueContext?>(provider =>
             {
                 var contextFactory = provider.GetRequiredService<ILagQueueContextFactory>();
 
-                IHttpContextAccessor httpContextAcessor = default;
+                IHttpContextAccessor? httpContextAcessor = default;
 
                 try
                 {
