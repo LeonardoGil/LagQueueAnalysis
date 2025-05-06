@@ -2,12 +2,11 @@
 using LagEnvironmentApplication.Models;
 using LagEnvironmentDomain.Entities;
 using LagRabbitMqManagerToolkit.Domains;
-using LagRabbitMq = LagRabbitMqManagerToolkit.Services.Interfaces;
-
+using LagRabbitMqManagerToolkit.Services.Interfaces;
 
 namespace LagEnvironmentApplication.Services
 {
-    public class AuthenticationService(LagRabbitMq.IOverviewService _overviewService,
+    public class AuthenticationService(IOverviewService _overviewService,
                                        IEnvironmentService _environmentService,
                                        ITokenStore _tokenStore) : IAuthenticationService
     {
@@ -55,11 +54,11 @@ namespace LagEnvironmentApplication.Services
 
             try
             {
-                await _overviewService.GetAsync(); // TO DO: Parametro rabbitMQSetting
+                await _overviewService.GetAsync(rabbitMQSetting);
 
                 return rabbitMQSetting;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 throw new Exception("Conexão com RabbitMQ Inválida");
             }
