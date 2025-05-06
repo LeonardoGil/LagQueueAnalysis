@@ -1,19 +1,26 @@
 ﻿using AutoMapper;
 using LagQueueDomain.Entities;
-using LagRabbitMQ.DTOs;
+using LagRabbitMQ = LagRabbitMqManagerToolkit.Requests;
 
 namespace LagQueueApplication.Mappings.MappingResolvers
 {
-    public class ExceptionMessageMappingResolver(IMapper mapper) : IValueResolver<MessageDto, Message, ExceptionMessage>
+    public class ExceptionMessageMappingResolver(IMapper mapper) : IValueResolver<LagRabbitMQ.Message, Message, ExceptionMessage>
     {
-        public ExceptionMessage? Resolve(MessageDto source, Message destination, ExceptionMessage destMember, ResolutionContext context)
+        public ExceptionMessage? Resolve(LagRabbitMQ.Message source, Message destination, ExceptionMessage destMember, ResolutionContext context)
         {
-            var header = source.properties.headers;
+            return default;
 
-            if (string.IsNullOrEmpty(header.NServiceBusExceptionInfoExceptionType) || string.IsNullOrEmpty(header.NServiceBusExceptionInfoMessage))
-                return null;
+            // TO DO: Requer headers referente NServiceBus
 
-            return mapper.Map<ExceptionMessage>(source);
+            //var header = source.Properties?.Headers;
+
+            //if (header is null)
+            //    return null;
+
+            //if (string.IsNullOrEmpty(header.NServiceBusExceptionInfoExceptionType) || string.IsNullOrEmpty(header.NServiceBusExceptionInfoMessage))
+            //    return null;
+
+            //return mapper.Map<ExceptionMessage>(source);
         }
     }
 }

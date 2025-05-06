@@ -7,14 +7,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace LagQueueApplication.Services.Domains
 {
-    public class QueueService : IQueueService
+    public class QueueService(IBaseRepository<LagQueueContext> repository) : IQueueService
     {
-        private readonly IBaseRepository<LagQueueContext> _repository;
-
-        public QueueService(IBaseRepository<LagQueueContext> repository)
-        {
-            _repository = repository;
-        }
+        private readonly IBaseRepository<LagQueueContext> _repository = repository;
 
         public void Register(List<Queue> queues)
         {

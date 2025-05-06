@@ -13,9 +13,8 @@ using LagQueueApplication.Interfaces;
 using LagQueueApplication.Processings;
 using LagQueueApplication.Queries;
 using LagQueueApplication.Services.Domains;
-using LagRabbitMQ.Interfaces;
-using LagRabbitMQ.Services;
-using LagRabbitMQ.Settings;
+using LagRabbitMqManagerToolkit.Domains;
+using LagRabbitMqManagerToolkit.Extensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -62,13 +61,10 @@ namespace LagQueueAnalysisResolver.Configurations
 
         public static void AddRabbitMQServices(this IServiceCollection services)
         {
-            // Services Rabbit
-            services.AddScoped<IQueueRabbitService, QueueRabbitService>();
-            services.AddScoped<IOverviewRabbitService, OverviewRabbitService>();
-
-            services.AddScoped<RabbitMQSetting>(provider =>
+            services.AddLagRabbitMqManagerToolkit((provider) =>
             {
-                IHttpContextAccessor httpContextAcessor = default;
+                IHttpContextAccessor? httpContextAcessor = default;
+                RabbitSettings? rabbitSetting;
 
                 try
                 {
@@ -89,17 +85,16 @@ namespace LagQueueAnalysisResolver.Configurations
 
                     var tokenKey = Guid.Parse(authorization.ToString() ?? throw new Exception("Token Authorization não informado"));
 
-                    return tokenStore.GetEnvironment(tokenKey)?.RabbitMQSetting ?? throw new Exception("RabbitMQ Setting não encontrado");
+                    rabbitSetting = tokenStore.GetEnvironment(tokenKey)?.RabbitSettings;
                 }
-
-                var tokenAcessor = provider.GetRequiredService<TokenAcessor>();
-
-                if (tokenAcessor is not null)
+                else
                 {
-                    return tokenAcessor.AnalysisEnvironment.RabbitMQSetting;
+                    var tokenAcessor = provider.GetRequiredService<TokenAcessor>();
+
+                    rabbitSetting = tokenAcessor?.AnalysisEnvironment?.RabbitSettings;
                 }
 
-                return null;
+                return rabbitSetting ?? throw new Exception("RabbitSetting Null");
             });
         }
 
@@ -121,11 +116,11 @@ namespace LagQueueAnalysisResolver.Configurations
 
         public static void AddLagQueueContext(this IServiceCollection services, string connectionString)
         {
-            services.AddScoped<LagQueueContext>(provider =>
+            services.AddScoped<LagQueueContext?>(provider =>
             {
                 var contextFactory = provider.GetRequiredService<ILagQueueContextFactory>();
 
-                IHttpContextAccessor httpContextAcessor = default;
+                IHttpContextAccessor? httpContextAcessor = default;
 
                 try
                 {
@@ -167,7 +162,7 @@ namespace LagQueueAnalysisResolver.Configurations
             services.AddScoped<LagQueueContext>(provider =>
             {
                 var contextFactory = provider.GetRequiredService<ILagQueueContextFactory>();
-                
+
                 IHttpContextAccessor httpContextAcessor = default;
 
                 try

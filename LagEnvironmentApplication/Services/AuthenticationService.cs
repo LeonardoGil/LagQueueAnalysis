@@ -1,27 +1,15 @@
 ﻿using LagEnvironmentApplication.Interfaces;
 using LagEnvironmentApplication.Models;
 using LagEnvironmentDomain.Entities;
-using LagRabbitMQ.Interfaces;
-using LagRabbitMQ.Settings;
-using System;
+using LagRabbitMqManagerToolkit.Domains;
+using LagRabbitMqManagerToolkit.Services.Interfaces;
 
 namespace LagEnvironmentApplication.Services
 {
-    public class AuthenticationService : IAuthenticationService
+    public class AuthenticationService(IOverviewService _overviewService,
+                                       IEnvironmentService _environmentService,
+                                       ITokenStore _tokenStore) : IAuthenticationService
     {
-        private readonly IOverviewRabbitService _overviewService;
-        private readonly IEnvironmentService _environmentService;
-        private readonly ITokenStore _tokenStore;
-
-        public AuthenticationService(IOverviewRabbitService overviewService,
-                                     IEnvironmentService environmentService,
-                                     ITokenStore tokenStore)
-        {
-            _overviewService = overviewService;
-            _environmentService = environmentService;
-            _tokenStore = tokenStore;
-        }
-
         public async Task<Guid> Authenticate(AuthenticateModel authenticate)
         {
             var rabbitMQSetting = await ValidateConnectionWithRabbitMQ(authenticate);
@@ -34,7 +22,7 @@ namespace LagEnvironmentApplication.Services
 
             var environment = await _environmentService.ToGenerate(generateEnvironment);
 
-            environment.RabbitMQSetting = rabbitMQSetting;
+            environment.RabbitSettings = rabbitMQSetting;
 
             var token = await ValidateToken(environment);
 
@@ -55,9 +43,9 @@ namespace LagEnvironmentApplication.Services
             return await Task.FromResult(token);
         }
 
-        private async Task<RabbitMQSetting> ValidateConnectionWithRabbitMQ(AuthenticateModel authenticate)
+        private async Task<RabbitSettings> ValidateConnectionWithRabbitMQ(AuthenticateModel authenticate)
         {
-            var rabbitMQSetting = new RabbitMQSetting
+            var rabbitMQSetting = new RabbitSettings
             {
                 Url = authenticate.Url,
                 Username = authenticate.User,
@@ -66,11 +54,11 @@ namespace LagEnvironmentApplication.Services
 
             try
             {
-                await _overviewService.OverviewRequest(rabbitMQSetting);
+                await _overviewService.GetAsync(rabbitMQSetting);
 
                 return rabbitMQSetting;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 throw new Exception("Conexão com RabbitMQ Inválida");
             }

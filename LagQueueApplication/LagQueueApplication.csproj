@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="13.0.1" />
+    <PackageReference Include="LagRabbitMqManagerToolkit" Version="1.1.1-alpha" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.7" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.7" />
   </ItemGroup>
@@ -16,7 +17,6 @@
     <ProjectReference Include="..\LagEnvironmentApplication\LagEnvironmentApplication.csproj" />
     <ProjectReference Include="..\LagQueueAnalysisInfra\LagQueueAnalysisInfra.csproj" />
     <ProjectReference Include="..\LagQueueDomain\LagQueueDomain.csproj" />
-    <ProjectReference Include="..\LagRabbitMQ\LagRabbitMQ.csproj" />
   </ItemGroup>
 
 </Project>

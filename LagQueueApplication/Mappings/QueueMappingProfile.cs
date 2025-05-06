@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using LagQueueApplication.Models;
 using LagQueueDomain.Entities;
-using LagRabbitMQ.DTOs;
+using LagRabbitMQ = LagRabbitMqManagerToolkit.Requests;
 
 namespace LagQueueApplication.Mappings
 {
@@ -9,9 +9,9 @@ namespace LagQueueApplication.Mappings
     {
         public QueueMappingProfile()
         {
-            CreateMap<QueueDto, Queue>()
-                .ForMember(dest => dest.Name, src => src.MapFrom(dto => dto.name))
-                .ForMember(dest => dest.Host, src => src.MapFrom(dto => dto.vhost));
+            CreateMap<LagRabbitMQ.Queue, Queue>()
+                .ForMember(dest => dest.Name, src => src.MapFrom(dto => dto.Name))
+                .ForMember(dest => dest.Host, src => src.MapFrom(dto => dto.Vhost));
 
             CreateMap<Queue, QueueQueryModel>();
         }
